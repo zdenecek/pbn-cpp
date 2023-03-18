@@ -2,13 +2,15 @@
 
 #include <exception>
 
+using namespace std;
+
 vector<shared_ptr<SemanticPbnToken>> &PbnFile::getTokens()  {
     return this->tokens;
 }
 
  DealContextObs PbnFile::getDeal(size_t number)  {
     if(!this->hasDealWithNumber(number)) {
-        throw std::out_of_range("File does not contain deal number " + to_string(number));
+        throw out_of_range("File does not contain deal number " + to_string(number));
     }
     return this->dealsByNumber.at(number);
 }

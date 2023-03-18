@@ -60,8 +60,6 @@ public:
 
     bool isTableTag() const override;
 
-    [[nodiscard]] string typeName() const override;
-
     string toString() const override;
 
 private:
