@@ -20,9 +20,13 @@ bool TableTag::isTableTag() const {
 
 string TableTag::toString() const {
     auto s = Tag::toString();
+    return s;
+
+    // TODO
     for (auto &value : this->values) {
         s += value + ";";
     }
+    return s;
 }
 
 void TableTag::parse_column_info() {
