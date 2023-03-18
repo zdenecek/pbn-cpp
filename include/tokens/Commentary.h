@@ -18,12 +18,10 @@ namespace tokens {
     class Commentary : public SemanticPbnToken {
     public:
         string typeName() const override;
-
         Commentary(CommentaryFormat format, bool startsOnNewLine, const string &content);
-
-    public:
         string toString() const override;
 
+        bool isTag() const override;
 
         CommentaryFormat format;
         bool startsOnNewLine;

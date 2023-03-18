@@ -9,5 +9,9 @@ namespace tokens {
     string EmptyLine::typeName() const {
         return "Empty Line";
     }
+
+    bool EmptyLine::isTag() const {
+        return false;
+    }
 }
 

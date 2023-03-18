@@ -11,5 +11,7 @@ public:
     virtual string toString() const = 0;
     virtual string typeName() const = 0;
 
+    virtual bool isTag() const = 0;
+
 };
 

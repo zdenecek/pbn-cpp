@@ -15,3 +15,13 @@ string Tag::typeName() const {
 string Tag::toString() const {
     return "[" + this->tagname + " \"" +  this->content + "\"]";
 }
+
+Tag::Tag(const string &tagname, const string &content) : tagname(tagname), content(content) {}
+
+bool Tag::isTag() const {
+    return true;
+}
+
+bool Tag::isTableTag() const {
+    return false;
+}

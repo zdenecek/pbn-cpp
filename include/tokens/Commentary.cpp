@@ -14,14 +14,16 @@ namespace tokens {
     }
 
     string Commentary::typeName() const {
-        if (this->startsOnNewLine) return "Commentary";
-        else return "Commentary (inline)";
-
+        return "Commentary";
     }
 
     Commentary::Commentary(CommentaryFormat format, bool startsOnNewLine, const string &content) : format(format),
                                                                                                    startsOnNewLine(
                                                                                                            startsOnNewLine),
                                                                                                    content(content) {}
+
+    bool Commentary::isTag() const {
+        return false;
+    }
 
 } // tokens

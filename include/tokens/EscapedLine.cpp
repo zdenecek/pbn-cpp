@@ -13,7 +13,7 @@
 
 namespace tokens {
 
-    const regex versionRegex("^\\% PBN\\s+(\\d+\\.\\d+)\\s+$");
+    const regex versionRegex(R"--(^\% PBN\s+(\d+\.\d+)\s*$)--");
 
     inline bool isVersionLine(const string &line) {
         if (!line.starts_with(versionLinePrefix))
@@ -29,6 +29,14 @@ namespace tokens {
             return make_shared<VersionEscapedLine>(contents);
 
         return make_shared<CustomEscapedLine>(contents.substr(1));
+    }
+
+    bool EscapedLine::isTag() const {
+        return false;
+    }
+
+    bool EscapedLine::isDirective() const {
+        return this->isDirective() || this->isExport();
     }
 
 

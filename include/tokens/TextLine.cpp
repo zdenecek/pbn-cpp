@@ -9,3 +9,7 @@ tokens::TextLine::TextLine(const string &content) : content(content) {}
 string tokens::TextLine::typeName() const {
     return "Unrecognized Text Line";
 }
+
+bool tokens::TextLine::isTag() const {
+    return false;
+}

@@ -3,6 +3,8 @@
 #include <istream>
 
 #include "PbnFile.h"
+#include "Tag.h"
+#include "TagFactory.h"
 
 using namespace std;
 
@@ -12,6 +14,14 @@ public:
     PbnFile parse(istream& inputStream);
 
 private:
-    void handleLine(PbnFile& file, const string& line, istream& inputStream);
-    void parseMultilineComment(PbnFile &file, const string &line, istream &inputStream, bool startedOnNewLine);
+
+    TagFactory tagFactory;
+
+    void parseToken(PbnFile &file, string &line, istream &inputStream, bool startedOnNewLine);
+    string parseMultilineComment(PbnFile &file,  string &line, istream &inputStream, bool startedOnNewLine);
+
+    void parseTag(PbnFile &file, string &line, istream &inputStream, bool startedOnNewLine);
+    vector<string> getTableValues(PbnFile &file,  string &line, istream &inputStream);
+
+
 };

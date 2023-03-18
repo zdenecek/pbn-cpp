@@ -18,9 +18,10 @@ namespace tokens {
     public:
         static shared_ptr<EscapedLine> create(const string &contents);
 
-    public:
-        [[nodiscard]] virtual bool isExport() const = 0;
+        bool isTag() const override;
 
+        bool isDirective() const;
+        [[nodiscard]] virtual bool isExport() const = 0;
         [[nodiscard]] virtual bool isVersion() const = 0;
     };
 

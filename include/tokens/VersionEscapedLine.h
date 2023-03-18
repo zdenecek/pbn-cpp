@@ -3,7 +3,7 @@
 #include <cassert>
 #include <regex>
 #include "EscapedLine.h"
-#include "../trim.h"
+#include "utils/strings.h"
 
 namespace tokens {
 
@@ -41,7 +41,7 @@ namespace tokens {
     }
 
     string VersionEscapedLine::toString() const {
-        return string();
+        return string(versionLinePrefix) + " " + this->versionString;
     }
 
     string VersionEscapedLine::getVersionString() const {

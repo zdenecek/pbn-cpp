@@ -17,6 +17,8 @@ public:
     explicit TextLine(const string &content);
     string toString() const override;
 
+    bool isTag() const override;
+
     string typeName() const override;
 };
 }
