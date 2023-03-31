@@ -1,6 +1,8 @@
 
 #pragma  once
 
+#include <string>
+
 #include "EscapedLine.h"
 
 namespace tokens {
@@ -9,13 +11,13 @@ namespace tokens {
         bool isExport() const override;
 
     public:
-        string typeName() const override;
+        std::string typeName() const override;
 
     private:
 
         bool isVersion() const override;
 
-        string toString() const override;
+        std::string toString() const override;
     };
 
     bool ExportEscapedLine::isExport() const {
@@ -26,11 +28,11 @@ namespace tokens {
         return false;
     }
 
-    string ExportEscapedLine::toString() const {
-        return string(exportLine);
+    std::string ExportEscapedLine::toString() const {
+        return std::string(exportLine);
     }
 
-    string ExportEscapedLine::typeName() const {
+    std::string ExportEscapedLine::typeName() const {
         return "Export Directive";
     }
 }

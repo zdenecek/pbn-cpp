@@ -2,11 +2,8 @@
 #include <vector>
 #include <string>
 
-
-using namespace std;
-
-vector<string> split(const string& s);
-void split(const string& s, vector<string>& into);
+std::vector<std::string> split(const std::string& s);
+void split(const std::string& s, std::vector<std::string>& into);
 
 // trim from start (in place)
 void ltrim(std::string &s);

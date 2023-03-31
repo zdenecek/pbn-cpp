@@ -8,8 +8,8 @@ namespace tokens {
 
     class EmptyLine : public SemanticPbnToken {
     public:
-        string toString() const override;
-        string typeName() const override;
+        std::string toString() const override;
+        std::string typeName() const override;
 
         bool isTag() const override;
 

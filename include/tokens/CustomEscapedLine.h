@@ -5,20 +5,20 @@
 class CustomEscapedLine : public tokens::EscapedLine {
 
 public:
-    string content;
+    std::string content;
 
-    explicit CustomEscapedLine(const string &content);
+    explicit CustomEscapedLine(const std::string &content);
 
-    string typeName() const override;
+    std::string typeName() const override;
 
     [[nodiscard]] bool isExport() const override;
 
     [[nodiscard]] bool isVersion() const override;
 
-    string toString() const override;
+    std::string toString() const override;
 };
 
-CustomEscapedLine::CustomEscapedLine(const string &content) : content(content) {
+CustomEscapedLine::CustomEscapedLine(const std::string &content) : content(content) {
 
 }
 
@@ -30,11 +30,11 @@ bool CustomEscapedLine::isVersion() const {
     return false;
 }
 
-string CustomEscapedLine::toString() const {
+std::string CustomEscapedLine::toString() const {
     return tokens::escapeCharacter + this->content;
 }
 
-string CustomEscapedLine::typeName() const {
+std::string CustomEscapedLine::typeName() const {
     return "Escaped Line";
 }
 

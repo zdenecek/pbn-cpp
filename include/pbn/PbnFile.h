@@ -8,8 +8,6 @@
 #include "../tokens/SemanticPbnToken.h"
 #include "DealContext.h"
 
-using namespace std;
-
 using DealContextObs = DealContext*;
 
 class PbnFile
@@ -17,20 +15,20 @@ class PbnFile
     friend class PbnParser;
 
 protected:
-	vector<shared_ptr<SemanticPbnToken>> tokens;
-    vector<DealContext> deals;
-    map<int, DealContext*> dealsByNumber;
+	std::vector<std::shared_ptr<SemanticPbnToken>> tokens;
+    std::vector<DealContext> deals;
+    std::map<int, DealContext*> dealsByNumber;
 
 public:
 
-    [[nodiscard]] const vector<DealContext>& getDeals() const;
+    [[nodiscard]] const std::vector<DealContext>& getDeals() const;
     [[nodiscard]] bool hasDealWithNumber(size_t number) const;
 
     [[nodiscard]] DealContextObs getDeal(size_t number);
-    [[nodiscard]] vector<shared_ptr<SemanticPbnToken>>& getTokens();
+    [[nodiscard]] std::vector<std::shared_ptr<SemanticPbnToken>>& getTokens();
 
     void normalize();
-    void insertToken(shared_ptr<SemanticPbnToken> token);
+    void insertToken(std::shared_ptr<SemanticPbnToken> token);
 	
 };
 

@@ -1,12 +1,7 @@
-//
-// Created by zdnek on 03/03/2023.
-//
-
-
 #pragma once
 
+#include <string>
 #include "SemanticPbnToken.h"
-
 
 namespace tokens {
 
@@ -17,15 +12,15 @@ namespace tokens {
 
     class Commentary : public SemanticPbnToken {
     public:
-        string typeName() const override;
-        Commentary(CommentaryFormat format, bool startsOnNewLine, const string &content);
-        string toString() const override;
+        std::string typeName() const override;
+        Commentary(CommentaryFormat format, bool startsOnNewLine, const std::string &content);
+        std::string toString() const override;
 
         bool isTag() const override;
 
         CommentaryFormat format;
         bool startsOnNewLine;
-        string content;
+        std::string content;
     };
 
 } // tokens

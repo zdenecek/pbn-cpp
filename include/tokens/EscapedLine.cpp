@@ -1,7 +1,3 @@
-//
-// Created by zdnek on 03/03/2023.
-//
-
 #include "EscapedLine.h"
 #include "VersionEscapedLine.h"
 #include "ExportEscapedLine.h"
@@ -13,20 +9,20 @@
 
 namespace tokens {
 
-    const regex versionRegex(R"--(^\% PBN\s+(\d+\.\d+)\s*$)--");
+    const std::regex versionRegex(R"--(^\% PBN\s+(\d+\.\d+)\s*$)--");
 
-    inline bool isVersionLine(const string &line) {
+    inline bool isVersionLine(const std::string &line) {
         if (!line.starts_with(versionLinePrefix))
             return false;
         else
-            return regex_match(line, versionRegex);
+            return std::regex_match(line, versionRegex);
     }
 
-    shared_ptr<EscapedLine> EscapedLine::create(const string &contents) {
+    std::shared_ptr<EscapedLine> EscapedLine::create(const std::string &contents) {
         if (contents == exportLine)
-            return make_shared<ExportEscapedLine>();
+            return std::make_shared<ExportEscapedLine>();
         if (isVersionLine(contents))
-            return make_shared<VersionEscapedLine>(contents);
+            return std::make_shared<VersionEscapedLine>(contents);
 
         return make_shared<CustomEscapedLine>(contents.substr(1));
     }
@@ -36,7 +32,7 @@ namespace tokens {
     }
 
     bool EscapedLine::isDirective() const {
-        return this->isDirective() || this->isExport();
+        return this->isVersion() || this->isExport();
     }
 
 

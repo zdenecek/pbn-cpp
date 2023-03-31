@@ -1,16 +1,7 @@
-//
-// Created by zdnek on 17/03/2023.
-//
-
-
 #pragma once
-
 
 #include <vector>
 #include "Tag.h"
-
-using namespace std;
-
 
 struct ColumnInfo {
     enum class Ordering {
@@ -25,7 +16,7 @@ struct ColumnInfo {
         None
     };
 
-    string name;
+    std::string name;
     Ordering ordering;
     Alignment alignment;
     size_t alignment_width;
@@ -36,10 +27,10 @@ class TableTag  : public Tag {
 public:
 
     struct row_iterator {
-        vector<string>::iterator it;
+        std::vector<std::string>::iterator it;
         int column_count;
 
-        row_iterator(vector<string>::iterator it, int column_count) : it(it), column_count(column_count) {}
+        row_iterator(std::vector<std::string>::iterator it, int column_count) : it(it), column_count(column_count) {}
 
         row_iterator &operator++();
 
@@ -49,22 +40,22 @@ public:
 
         bool operator!=(const row_iterator &rhs) const;
 
-        string &operator*();
+        std::string &operator*();
 
-        string *operator->();
+        std::string *operator->();
     };
 
-    TableTag(const string &tagname, const string &content, vector<string> &&values);
+    TableTag(const std::string &tagname, const std::string &content, std::vector<std::string> &&values);
 
-    [[nodiscard]] const vector<string> &getValues() const;
+    [[nodiscard]] const std::vector<std::string> &getValues() const;
 
     bool isTableTag() const override;
 
-    string toString() const override;
+    std::string toString() const override;
 
 private:
 
-    vector<string> values;
+    std::vector<std::string> values;
     int column_count;
 
     void parse_column_info();

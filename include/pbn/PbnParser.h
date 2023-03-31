@@ -6,22 +6,20 @@
 #include "Tag.h"
 #include "TagFactory.h"
 
-using namespace std;
 
 class PbnParser {
 
 public:
-    PbnFile parse(istream& inputStream);
+    PbnFile parse(std::istream& inputStream);
 
 private:
 
     TagFactory tagFactory;
 
-    void parseToken(PbnFile &file, string &line, istream &inputStream, bool startedOnNewLine);
-    string parseMultilineComment(PbnFile &file,  string &line, istream &inputStream, bool startedOnNewLine);
+    void parseToken(PbnFile &file, std::string &line, std::istream &inputStream, bool startedOnNewLine);
+    std::string parseMultilineComment(PbnFile &file, std::string &line, std::istream &inputStream, bool startedOnNewLine);
 
-    void parseTag(PbnFile &file, string &line, istream &inputStream, bool startedOnNewLine);
-    vector<string> getTableValues(PbnFile &file,  string &line, istream &inputStream);
-
+    void parseTag(PbnFile &file, std::string &line, std::istream &inputStream, bool startedOnNewLine);
+    std::vector<std::string> getTableValues(PbnFile &file, std::string &line, std::istream &inputStream);
 
 };

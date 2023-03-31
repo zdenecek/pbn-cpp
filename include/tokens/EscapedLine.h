@@ -4,6 +4,7 @@
 
 #include <memory>
 #include <regex>
+#include <string>
 
 namespace tokens {
 
@@ -11,12 +12,12 @@ namespace tokens {
     /**
      * As per 2.4  Escape mechanism / Proposed uses (1) and (2)
      */
-    constexpr string_view versionLinePrefix = "% PBN";
-    constexpr string_view exportLine = "% EXPORT";
+    constexpr std::string_view versionLinePrefix = "% PBN";
+    constexpr std::string_view exportLine = "% EXPORT";
 
     class EscapedLine : public SemanticPbnToken {
     public:
-        static shared_ptr<EscapedLine> create(const string &contents);
+        static std::shared_ptr<EscapedLine> create(const std::string &contents);
 
         bool isTag() const override;
 

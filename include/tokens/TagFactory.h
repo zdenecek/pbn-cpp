@@ -1,8 +1,3 @@
-//
-// Created by zdnek on 12/03/2023.
-//
-
-
 #pragma once
 
 
@@ -11,13 +6,11 @@
 #include <vector>
 #include "Tag.h"
 
-
-using namespace std;
 class TagFactory {
 
 public:
-    shared_ptr<Tag> createTag(string tagName, string tagContent);
-    shared_ptr<Tag> createTableTag(string tagName, string tagContent, vector<string> &&values);
+    std::shared_ptr<Tag> createTag(std::string tagName, std::string tagContent);
+    std::shared_ptr<Tag> createTableTag(std::string tagName, std::string tagContent, std::vector<std::string> &&values);
 
-    bool isTableTag(const string &tagName);
+    bool isTableTag(const std::string &tagName);
 };

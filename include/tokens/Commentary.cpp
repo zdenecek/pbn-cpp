@@ -1,23 +1,22 @@
-//
-// Created by zdnek on 03/03/2023.
-//
+
+#include <string>
 
 #include "Commentary.h"
 
 namespace tokens {
 
-    string Commentary::toString() const {
+    std::string Commentary::toString() const {
         if(this->format == CommentaryFormat::Semicolon)
             return  ";" + this->content;
         else
             return  "{" + this->content + "}";
     }
 
-    string Commentary::typeName() const {
+    std::string Commentary::typeName() const {
         return "Commentary";
     }
 
-    Commentary::Commentary(CommentaryFormat format, bool startsOnNewLine, const string &content) : format(format),
+    Commentary::Commentary(CommentaryFormat format, bool startsOnNewLine, const std::string &content) : format(format),
                                                                                                    startsOnNewLine(
                                                                                                            startsOnNewLine),
                                                                                                    content(content) {}

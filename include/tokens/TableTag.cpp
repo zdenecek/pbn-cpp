@@ -1,14 +1,14 @@
-//
-// Created by zdnek on 17/03/2023.
-//
+#include <vector>
+#include <string>
 
 #include "TableTag.h"
 
-const vector<string> &TableTag::getValues() const {
+
+const std::vector<std::string> &TableTag::getValues() const {
     return this->values;
 }
 
-TableTag::TableTag(const string &tagname, const string &content, vector<string> &&values) :
+TableTag::TableTag(const std::string &tagname, const std::string &content, std::vector<std::string> &&values) :
     Tag(tagname, content), values(values){
 
     this->parse_column_info();
@@ -18,7 +18,7 @@ bool TableTag::isTableTag() const {
     return true;
 }
 
-string TableTag::toString() const {
+std::string TableTag::toString() const {
     auto s = Tag::toString();
     return s;
 
@@ -33,11 +33,11 @@ void TableTag::parse_column_info() {
     this->column_count = count(this->content.begin(), this->content.end(), ';') + 1;
 }
 
-string *TableTag::row_iterator::operator->() {
+std::string *TableTag::row_iterator::operator->() {
     return &(*it);
 }
 
-string &TableTag::row_iterator::operator*() {
+std::string &TableTag::row_iterator::operator*() {
     return *it;
 }
 

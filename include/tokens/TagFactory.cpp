@@ -1,13 +1,12 @@
-//
-// Created by zdnek on 12/03/2023.
-//
 
 #include <set>
+#include <string>
+#include <memory>
+
 #include "TagFactory.h"
 
-using namespace std;
 
-set<string> tableTags = {"ActionTable",
+std::set<std::string> tableTags = {"ActionTable",
                             "AuctionTimeTable",
                             "InstantScoreTable",
                             "OptimumPlayTable",
@@ -16,15 +15,15 @@ set<string> tableTags = {"ActionTable",
                             "ScoreTable",
                             "TotalScoreTable"};
 
-bool TagFactory::isTableTag(const string& tagName) {
+bool TagFactory::isTableTag(const std::string& tagName) {
 
     return tableTags.contains(tagName);
 }
 
-shared_ptr<Tag> TagFactory::createTableTag(string tagName, string tagContent, vector<string> &&values) {
+std::shared_ptr<Tag> TagFactory::createTableTag(std::string tagName, std::string tagContent, std::vector<std::string> &&values) {
     return make_shared<Tag>(tagName, tagContent);
 }
 
-shared_ptr<Tag> TagFactory::createTag(string tagName, string tagContent) {
+std::shared_ptr<Tag> TagFactory::createTag(std::string tagName, std::string tagContent) {
     return make_shared<Tag>(tagName, tagContent);
 }

@@ -2,6 +2,8 @@
 
 #include <cassert>
 #include <regex>
+#include <string>
+
 #include "EscapedLine.h"
 #include "utils/strings.h"
 
@@ -9,25 +11,24 @@ namespace tokens {
 
     class VersionEscapedLine : public tokens::EscapedLine {
 
-
-        string versionString;
+        std::string versionString;
     public:
-        explicit VersionEscapedLine(const string &versionString);
+        explicit VersionEscapedLine(const std::string &versionString);
 
-        string getVersionString() const;
+        std::string getVersionString() const;
 
         bool isExport() const override;
 
-        string typeName() const override;
+        std::string typeName() const override;
 
         bool isVersion() const override;
 
-        string toString() const override;
+        std::string toString() const override;
 
     };
 
-    inline string extractVersionString(const string &line) {
-        string result = line.substr(versionLinePrefix.length());
+    inline std::string extractVersionString(const std::string &line) {
+        std::string result = line.substr(versionLinePrefix.length());
         trim(result);
         return result;
     }
@@ -40,19 +41,19 @@ namespace tokens {
         return false;
     }
 
-    string VersionEscapedLine::toString() const {
-        return string(versionLinePrefix) + " " + this->versionString;
+    std::string VersionEscapedLine::toString() const {
+        return std::string(versionLinePrefix) + " " + this->versionString;
     }
 
-    string VersionEscapedLine::getVersionString() const {
+    std::string VersionEscapedLine::getVersionString() const {
         return this->versionString;
     }
 
-    VersionEscapedLine::VersionEscapedLine(const string &content) {
+    VersionEscapedLine::VersionEscapedLine(const std::string &content) {
         this->versionString = extractVersionString(content);
     }
 
-    string VersionEscapedLine::typeName() const {
+    std::string VersionEscapedLine::typeName() const {
         return "Version Directive";
     }
 

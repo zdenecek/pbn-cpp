@@ -1,29 +1,28 @@
 #pragma once
 
-#include "SemanticPbnToken.h"
 #include <string>
+#include "SemanticPbnToken.h"
 
-using namespace std;
 
 
 class Tag : public SemanticPbnToken {
 protected:
-    string tagname;
-    string content;
+    std::string tagname;
+    std::string content;
 
 public:
-    Tag(const string &tagname, const string &content);
+    Tag(const std::string &tagname, const std::string &content);
 
-    [[nodiscard]] const string &getTagname() const;
+    [[nodiscard]] const std::string &getTagname() const;
 
-    [[nodiscard]] const string &getContent() const;
+    [[nodiscard]] const std::string &getContent() const;
 
     virtual bool isTableTag() const;
 
-    string typeName() const override;
+    std::string typeName() const override;
 
     bool isTag() const override;
 
-    string toString() const override;
+    std::string toString() const override;
 };
 

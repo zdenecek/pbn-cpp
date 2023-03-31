@@ -1,12 +1,12 @@
 #include "TextLine.h"
 
-string tokens::TextLine::toString() const {
+std::string tokens::TextLine::toString() const {
     return this->content;
 }
 
-tokens::TextLine::TextLine(const string &content) : content(content) {}
+tokens::TextLine::TextLine(const std::string &content) : content(content) {}
 
-string tokens::TextLine::typeName() const {
+std::string tokens::TextLine::typeName() const {
     return "Unrecognized Text Line";
 }
 

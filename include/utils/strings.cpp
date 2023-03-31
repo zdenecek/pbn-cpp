@@ -1,18 +1,14 @@
-//
-// Created by zdnek on 16/03/2023.
-//
 #include "strings.h"
+
 #include <algorithm>
 #include <cctype>
 #include <locale>
 #include <vector>
 
-using namespace std;
-
 // split copied from source
 // https://stackoverflow.com/questions/8425214/splitting-string-into-a-vectorstring-of-words
-void split(const string &s, vector<string> &into) {
-    typedef string::size_type string_size;
+void split(const std::string &s, std::vector<std::string> &into) {
+    using string_size = std::string::size_type ;
     string_size i = 0;
 
     // invariant: we have processed characters [original value of i, i)
@@ -37,27 +33,27 @@ void split(const string &s, vector<string> &into) {
     }
 }
 
-vector<string> split(const string &s) {
-    vector<string> into;
+std::vector<std::string> split(const std::string &s) {
+    std::vector<std::string> into;
     split(s, into);
     return into;
 }
 
 // trims copied from
 // https://stackoverflow.com/questions/216823/how-to-trim-an-stdstring
-void ltrim(string &s) {
+void ltrim(std::string &s) {
     s.erase(s.begin(), std::find_if(s.begin(), s.end(), [](unsigned char ch) {
         return !std::isspace(ch);
     }));
 }
 
-void rtrim(string &s) {
+void rtrim(std::string &s) {
     s.erase(std::find_if(s.rbegin(), s.rend(), [](unsigned char ch) {
         return !std::isspace(ch);
     }).base(), s.end());
 }
 
-void trim(string &s) {
+void trim(std::string &s) {
     rtrim(s);
     ltrim(s);
 }

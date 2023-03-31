@@ -1,25 +1,24 @@
 
+#include "boost/program_options.hpp"
+#include "PbnApplication.h"
+
 #include <iostream>
-#include <vector>
-#include <fstream>
-#include <istream>
 
-#include "include/pbn/PbnParser.h"
-#include "program/application.h"
+int main(int ac, char *av[]) {
 
-using namespace std;
-
-int run(vector<string>& arguments) {
-
-    Application app;
-    app.run(arguments);
-
-    return 0;
-}
-
-int main(int argc, char *argv[]) {
-    vector<string> arguments(argv+1, argv + argc);
-    return run(arguments);
+    try {
+        Application app;
+        return app.run(ac, av);
+    } catch (const boost::program_options::error &e) {
+        std::cerr << "An error with options occured: " << e.what() << std::endl;
+        return 1;
+    } catch (const std::exception &e) {
+        std::cerr << "An error occurred: " << e.what() << std::endl;
+        return 1;
+    } catch (...) {
+        std::cerr << "An unknown error occurred." << std::endl;
+        throw;
+    }
 }
 
 
