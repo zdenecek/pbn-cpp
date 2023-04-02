@@ -1,13 +1,17 @@
-
-#include "PbnApplication.h"
-#include "PbnParser.h"
-
 #include <iostream>
 #include <vector>
 #include <fstream>
 #include <istream>
 #include <string>
 #include <iomanip>
+
+#include "PbnApplication.h"
+#include "PbnParser.h"
+#include "PbnSerializer.h"
+
+#include "PbnInfoPrinter.h"
+#include "PbnBoardAnalyzer.h"
+#include "PbnStripper.h"
 
 #include "debug_utils.h"
 
@@ -32,8 +36,8 @@ Application::Application()
 
 int Application::run(int ac, char *av[])
 {
-    po::options_description opts_desc("Allowed options");
-    opts_desc.add_options()
+    po::options_description visible_opts("Allowed options");
+    visible_opts.add_options()
             ("help,h", "produce help message")
             ("version", "print version information")
             ("verbose,v", "print additional information about the file")
@@ -43,29 +47,32 @@ int Application::run(int ac, char *av[])
             ("info", "print information about the file")
             ;
 
-    po::options_description hidden("Hidden");
-    hidden.add_options()
+    po::options_description hidden_opts("hidden_opts");
+    hidden_opts.add_options()
             ("debug", "")
             // positional
-            ("inputfile,i", po::value<std::string>()->required() ,"input file name");
+            ("inputfile", po::value<std::string>()->required() ,"input file name");
             ;
 
-    po::positional_options_description pos_opts_desc;
-    pos_opts_desc.add("inputfile", 1);
+    po::options_description opts("opts");
+    opts.add(hidden_opts).add(visible_opts);
+
+
+    po::positional_options_description pos_opts;
+    pos_opts.add("inputfile", 1);
 
 
     po::variables_map vm {};
 
     auto parsed = po::command_line_parser(ac, av)
-    .options(opts_desc)
-    .options(hidden)
-    .positional(pos_opts_desc)
+    .options(opts)
+    .positional(pos_opts)
     .run();
 
     po::store(parsed, vm, true);
 
     if(vm.count("help")) {
-        std::cout << opts_desc << std::endl;
+        std::cout << visible_opts << std::endl;
         return 0;
     }
 
@@ -104,11 +111,26 @@ int Application::handleFile(std::string filename, po::variables_map &vm)
     inputFile.close();
 
     if(vm.count("debug") != 0) {
+        Debug::serializePbnFile(file, std::cout);
         Debug::printBoardContextRanges(file, std::cout);
         return 0;
     }
 
+    if(vm.count("info") != 0) {
+        PbnInfoPrinter::printOverview(filename, file, std::cout);
+        return 0;
+    }
+    
+    if(vm.count("strip") != 0) {
+        PbnStripper::strip(file);
+    }
 
-    Debug::serializePbnFile(file, std::cout);
+    auto serializer = PbnSerializer();
+    if(vm.count("output") == 0) {
+        serializer.serialize(file, std::cout);
+    } else {
+        serializer.serialize(file, vm["output"].as<std::string>());
+    }
+
     return 0;
 }

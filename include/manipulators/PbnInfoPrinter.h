@@ -12,4 +12,4 @@ class PbnInfoPrinter {
 
 public:
     static void printOverview(std::string filename, const PbnFile &file, std::ostream &out);
-}
+};

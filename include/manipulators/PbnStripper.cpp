@@ -1,5 +1,5 @@
 #include "PbnStripper.h"
 
-void PbnStripper::stripFile(PbnFile &file)
+void PbnStripper::strip(PbnFile &file)
 {
 }

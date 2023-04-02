@@ -99,6 +99,7 @@ void PbnFile::serialize(std::ostream &stream) const
     for (auto &token : this->getTokens())
     {
         token->serialize(stream);
+        stream << "\n";
     }
 }
 

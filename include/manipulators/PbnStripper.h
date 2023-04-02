@@ -10,6 +10,6 @@
 class PbnStripper {
 
 public:
-    static void stripFile(PbnFile &file);
+    static void strip(PbnFile &file);
 
-}
+};
