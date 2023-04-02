@@ -7,6 +7,7 @@
 #include <stdexcept>
 #include <string>
 #include <vector>
+#include <iostream>
 #include <memory>
 #include <cassert>
 #include <algorithm>
@@ -134,7 +135,7 @@ void PbnFile::serialize(std::ostream &stream) const
 
 void PbnFile::deleteToken(const std::vector<std::shared_ptr<SemanticPbnToken>>::iterator &it)
 {
-    assert(this->tokens.begin() <= it && this->tokens.end() < it && "Iterator is outside of token vector");
+    assert(this->tokens.begin() <= it && it < this->tokens.end() && "Iterator is outside of token vector");
 
     size_t index = it - this->tokens.begin();
     tokens.erase(it);

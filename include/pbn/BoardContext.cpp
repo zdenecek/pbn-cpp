@@ -21,7 +21,7 @@ void BoardContext::applyTag(std::shared_ptr<Tag> token)
 
 void BoardContext::unapplyTag(std::shared_ptr<Tag> token)
 {
-    assert(token->getTagname() != tokens::tags::BOARD || this->boardNumber != 0 && "Internal error: Board number cannot be changed.");
+    assert( (token->getTagname() != tokens::tags::BOARD || this->boardNumber != 0) && "Internal error: Board number cannot be changed.");
 
     if (token->getTagname() == tokens::tags::BOARD)
     {

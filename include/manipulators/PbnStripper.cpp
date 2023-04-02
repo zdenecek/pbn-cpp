@@ -1,6 +1,7 @@
 #include "PbnStripper.h"
-
+#include "EscapedLine.h"
 #include <vector>
+#include <memory>
 
 PbnStripper::PbnStripper() : PbnStripper(
                                  {
@@ -19,10 +20,17 @@ PbnStripper::PbnStripper() : PbnStripper(
 
 void PbnStripper::strip(PbnFile &file)
 {
-    for (auto &token : file.getTokens())
+    for (size_t i = 0; i < file.getTokens().size(); i++)
     {
-        if (token->isTag())
-        {
-        }
+        auto token = file.getTokens()[i];
+
+        if (token->isEscapedLine() && std::static_pointer_cast<tokens::EscapedLine>(token)->isDirective())
+            continue;
+
+        if (token->isTag() && std::find(allowed_tags.begin(), allowed_tags.end(), std::static_pointer_cast<tokens::Tag>(token)->getTagname()) != allowed_tags.end())
+            continue;
+
+        file.deleteToken(token);
+        i--;
     }
 }

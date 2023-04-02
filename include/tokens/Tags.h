@@ -1,7 +1,14 @@
 
+#pragma once
+
+namespace tokens {
+
+    class SemanticPbnToken;
+    class Tag;
+}
+
 namespace tokens::tags
 {
-
     // Known tags
     constexpr auto EVENT = "Event";
     constexpr auto SITE = "Site";

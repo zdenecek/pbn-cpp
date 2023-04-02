@@ -36,7 +36,15 @@ Application::Application()
 int Application::run(int ac, char *av[])
 {
     po::options_description visible_opts("Allowed options");
-    visible_opts.add_options()("help,h", "produce help message")("version", "print version information")("verbose,v", "print additional information about the file")("strip,s", "remove all results, site and event information")("analyze,a", po::value<std::string>()->implicit_value("OptimumResultTable"), "create double dummy analyses for each board")("output,o", po::value<std::string>(), "output file name, if not specified, the program will use the input file name")("info", "print information about the file");
+    visible_opts.add_options()
+    ("help,h", "produce help message")
+    ("version", "print version information")
+    ("verbose,v", "print additional information about the file")
+    ("strip,s", "remove all results, site and event information")
+    ("analyze,a", po::value<std::string>()->implicit_value("OptimumResultTable"), "create double dummy analyses for each board")
+    ("output,o", po::value<std::string>(), "output file name, if not specified, the program will use the input file name")
+    ("info", "print information about the file")
+    ;
 
     po::options_description hidden_opts("hidden_opts");
     hidden_opts.add_options()("debug", "")
@@ -49,6 +57,7 @@ int Application::run(int ac, char *av[])
 
     po::positional_options_description pos_opts;
     pos_opts.add("inputfile", 1);
+    pos_opts.add("output", 1);
 
     po::variables_map vm{};
 

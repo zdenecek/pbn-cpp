@@ -44,5 +44,8 @@ struct Debug
 
     static void playground(const PbnFile &file, std::ostream &out)
     {
+        (void)file;
+        
+        (void)out;
     }
 };

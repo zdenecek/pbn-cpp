@@ -46,7 +46,7 @@ namespace tokens
 
     bool VersionEscapedLine::isVersion() const
     {
-        return false;
+        return true;
     }
 
     void VersionEscapedLine::serialize(std::ostream &to) const
