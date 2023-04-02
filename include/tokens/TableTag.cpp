@@ -93,7 +93,9 @@ void TableTag::serialize(std::ostream& to) const
     
     auto ostream_state { to.flags() }; // save stream configuration
     Tag::serialize(to);
-    for (auto &&row : this->getRows())
+    auto rows = this->getRows();
+
+    for (auto &&row : rows)
     {
         to << "\n";
         bool first = true;

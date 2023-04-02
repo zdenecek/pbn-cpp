@@ -9,6 +9,8 @@
 #include <string>
 #include <iomanip>
 
+#include "debug_utils.h"
+
 #include <boost/program_options.hpp>
 
 namespace po = boost::program_options;
@@ -39,6 +41,11 @@ int Application::run(int ac, char *av[])
             ("analyze,a", po::value<std::string>()->implicit_value("OptimumResultTable"), "create double dummy analyses for each board")
             ("output,o", po::value<std::string>(), "output file name, if not specified, the program will use the input file name")
             ("info", "print information about the file")
+            ;
+
+    po::options_description hidden("Hidden");
+    hidden.add_options()
+            ("debug", "")
             // positional
             ("inputfile,i", po::value<std::string>()->required() ,"input file name");
             ;
@@ -51,6 +58,7 @@ int Application::run(int ac, char *av[])
 
     auto parsed = po::command_line_parser(ac, av)
     .options(opts_desc)
+    .options(hidden)
     .positional(pos_opts_desc)
     .run();
 
@@ -80,7 +88,7 @@ int Application::run(int ac, char *av[])
     return this->handleFile(filename, vm);
 }
 
-int Application::handleFile(std::string filename, po::variables_map &)
+int Application::handleFile(std::string filename, po::variables_map &vm)
 {  
 
     std::ifstream inputFile;
@@ -95,14 +103,12 @@ int Application::handleFile(std::string filename, po::variables_map &)
     auto file = parser.parse(inputFile);
     inputFile.close();
 
-    file.normalize();
-
-    for (auto &token: file.getTokens()) {
-        auto name =  "<" + token->typeName() + ">";
-
-        std::cout << std::left << std::setw(16) << name << std::setw(0);
-        
-        std::cout << token->toString() << std::endl;
+    if(vm.count("debug") != 0) {
+        Debug::printBoardContextRanges(file, std::cout);
+        return 0;
     }
+
+
+    Debug::serializePbnFile(file, std::cout);
     return 0;
 }

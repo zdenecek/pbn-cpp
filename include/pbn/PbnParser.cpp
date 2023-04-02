@@ -26,13 +26,13 @@ void PbnParser::parseToken(PbnFile &file, string &line, istream &inputStream, bo
 
     // Empty line
     if (firstNonWsCharPosition == string::npos) {
-        file.tokens.push_back(make_shared<tokens::EmptyLine>());
+        file.appendToken(make_shared<tokens::EmptyLine>());
         line = "";
         return;
     }
     // Escaped line
     else if (line[0] == tokens::escapeCharacter) {
-        file.tokens.push_back(tokens::EscapedLine::create(line));
+        file.appendToken(tokens::EscapedLine::create(line));
         line = "";
         return;
     }
@@ -43,7 +43,7 @@ void PbnParser::parseToken(PbnFile &file, string &line, istream &inputStream, bo
         line = line;
 
     } else if (firstValidCharacter == ';') {
-        file.tokens.push_back(make_shared<Commentary>(CommentaryFormat::Semicolon,
+        file.appendToken(make_shared<Commentary>(CommentaryFormat::Semicolon,
                                                       true,
                                                       line.substr(firstValidCharacter)));
         line = "";
@@ -51,13 +51,13 @@ void PbnParser::parseToken(PbnFile &file, string &line, istream &inputStream, bo
         auto remainder = parseMultilineComment(file, line, inputStream, startedOnNewLine);
         line = remainder;
     } else {
-        file.tokens.push_back(make_shared<TextLine>(line));
+        file.appendToken(make_shared<TextLine>(line));
         line = "";
     }
 
 }
 
-vector<string> PbnParser::getTableValues(PbnFile &file, string &line, istream &inputStream) {
+vector<string> PbnParser::getTableValues(string &line, istream &inputStream) {
 
     vector<string> values;
     if(line.empty() && !getline(inputStream, line)) {
@@ -72,7 +72,7 @@ vector<string> PbnParser::getTableValues(PbnFile &file, string &line, istream &i
     return values;
 }
 
-void PbnParser::parseTag(PbnFile &file, string &line, istream &inputStream, bool startedOnNewLine) {
+void PbnParser::parseTag(PbnFile &file, string &line, istream &inputStream, bool /* startedOnNewLine */ ) {
 
     // simplified, not all import version are supported, most of them are not used
     regex regex1(R";((\s*\[\s*(\w+)\s*"(.*)"\s*\]\s*));");
@@ -91,11 +91,11 @@ void PbnParser::parseTag(PbnFile &file, string &line, istream &inputStream, bool
     auto tag = file.tokens.back();
 
     if(tagFactory.isTableTag(tagName)) {
-        vector<string> tableValues = getTableValues(file, line, inputStream);
-        file.tokens.push_back(tagFactory.createTableTag(tagName, tagContent, move(tableValues)));
+        vector<string> tableValues = getTableValues(line, inputStream);
+        file.appendToken(tagFactory.createTableTag(tagName, tagContent, move(tableValues)));
     }
     else {
-        file.tokens.push_back(tagFactory.createTag(tagName, tagContent));
+        file.appendToken(tagFactory.createTag(tagName, tagContent));
     }
 
     if(line.find_first_not_of(whiteSpaceCharacters) == string::npos) line = "";
@@ -115,7 +115,7 @@ string PbnParser::parseMultilineComment(PbnFile &file, string &line, istream &in
 
     line2.erase(0, end);
 
-    file.tokens.push_back(make_shared<Commentary>(CommentaryFormat::Brace, startedOnNewLine, content));
+    file.appendToken(make_shared<Commentary>(CommentaryFormat::Brace, startedOnNewLine, content));
 
     if (line2.find_first_not_of(whiteSpaceCharacters) != string::npos) {
         return line2;

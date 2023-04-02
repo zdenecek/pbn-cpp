@@ -8,7 +8,7 @@ file(GLOB SOURCES src/**/*.cpp include/**/*.cpp)
 file(GLOB HEADERS include/**/*.h)
 
 add_executable(${TARGET_NAME} main.cpp ${SOURCES} ${HEADERS})
-include_directories(include include/pbn include/tokens include/utils include/program)
+include_directories(include include/pbn include/tokens include/utils include/program include/manipulators include/debug)
 
 # Boost
 # set(Boost_DEBUG 1)

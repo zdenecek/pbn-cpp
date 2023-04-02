@@ -24,3 +24,11 @@
   - generate analysis using dds.dll (double dummy solver software)
   - export into html/pdf
   - generate - integrate Bigdeal (dealing software)?
+
+# Must do
+
+Identification section 
+
+# TODO
+
+Expand striping by configuring what to keep - by a file or string/ what to remove
