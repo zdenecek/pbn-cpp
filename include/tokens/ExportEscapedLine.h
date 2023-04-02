@@ -9,6 +9,7 @@
 namespace tokens
 {
 
+    /// @brief Represent an export directive, which is a line in the format "% EXPORT"
     class ExportEscapedLine : public tokens::EscapedLine
     {
         bool isExport() const override;

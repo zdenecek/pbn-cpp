@@ -18,6 +18,7 @@
 #include <boost/program_options.hpp>
 
 namespace po = boost::program_options;
+using namespace manipulators;
 
 Application *Application::instance = nullptr;
 
@@ -140,7 +141,7 @@ int Application::handleFile(std::string filename, po::variables_map &vm)
         serializer.serialize(file, vm["output"].as<std::string>());
     }
     else if(vm.count("overwrite")) {
-        
+
         serializer.serialize(file, filename);
     }
     else

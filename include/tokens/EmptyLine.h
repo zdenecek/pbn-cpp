@@ -6,7 +6,7 @@
 
 namespace tokens
 {
-
+    /// @brief Represent an empty line used for spacing in the file.
     class EmptyLine : public SemanticPbnToken
     {
     public:

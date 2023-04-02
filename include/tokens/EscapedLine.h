@@ -22,9 +22,12 @@ namespace tokens
         static std::shared_ptr<EscapedLine> create(const std::string &contents);
 
         bool isEscapedLine() const override;
-        bool isDirective() const;
         
+        /// @brief Returns true if the token is a version directive token or an export directive token.
+        bool isDirective() const;
+        /// @brief Returns true if the token is an export directive token ("% EXPORT")
         [[nodiscard]] virtual bool isExport() const = 0;
+        /// @brief Returns true if the token is a version directive token ("% PBN X.Y")
         [[nodiscard]] virtual bool isVersion() const = 0;
     };
 

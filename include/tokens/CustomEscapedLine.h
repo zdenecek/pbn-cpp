@@ -18,7 +18,6 @@ namespace tokens
         std::string getTypeName() const override;
 
         [[nodiscard]] bool isExport() const override;
-
         [[nodiscard]] bool isVersion() const override;
 
         void serialize(std::ostream &to) const override;

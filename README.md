@@ -62,11 +62,19 @@ To build, run
 cmake --build .
 ```
 
-## Tests
+## Documentation
 
-To run tests, build the project. A second target of pbn_test should be built.
+This project uses Doxygen to create documentation.
 
-To run tests, simply execute it:
+To build the documentation, use the provided Doxyfile or create or own and run
+
+```bash
+doxygen Doxyfile
+```
+
+## Testing
+
+To run the tests, build the project. A second target of pbn_test should be built, simply execute it:
 
 ```bash
 ./run_tests
@@ -78,4 +86,6 @@ Additionally, more options can be provided, run with help flag to see.
 ./run_test --help
 ```
 
+## Authors
 
+[Zdeněk Tomis](zdenektomis.eu)

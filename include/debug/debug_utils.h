@@ -7,9 +7,12 @@
 
 #include "PbnFile.h"
 
+/// @brief This class stores debug utilities
 struct Debug
 {
-
+    /// @brief Serializes a PbnFile to an output stream include token typeNames.
+    /// @param file file to serialize.
+    /// @param out stream to serialize the file to.
     static void serializePbnFile(const PbnFile &file, std::ostream &out)
     {
 
@@ -31,6 +34,7 @@ struct Debug
         out.flags(saved_flags);
     }
 
+    /// @brief Prints file BoardContext ranges to the stream.
     static void printBoardContextRanges(const PbnFile &file, std::ostream &out)
     {
         for (auto &context : file.getBoards())
@@ -42,10 +46,10 @@ struct Debug
         }
     }
 
-    static void playground(const PbnFile &file, std::ostream &out)
-    {
-        (void)file;
+    // static void playground(const PbnFile &file, std::ostream &out)
+    // {
+    //     (void)file;
         
-        (void)out;
-    }
+    //     (void)out;
+    // }
 };

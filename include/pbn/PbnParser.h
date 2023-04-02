@@ -14,6 +14,10 @@ class PbnParser
 {
 
 public:
+
+    /// @brief Represents the recovery mode of the parser, what it should do when a lexical or syntactical error is encountered
+    /// @see PbnParser::PbnParser(RecoveryMode mode)
+    /// Only strict mode is supported at the moment
     enum class RecoveryMode
     {
         /**
@@ -39,7 +43,17 @@ public:
             throw std::runtime_error("Only strict mode is supported at the moment");
     }
 
+    /// @brief Parser a pbn file from input stream.
     PbnFile parse(std::istream &inputStream);
+
+    /// @brief Parse a token from the given line, or more lines.
+    /// If the line is not consumed completely by the parser, line contents will be updated to contain the remaining
+    /// part of the line. If the line is consumed completely, line will be empty on return.
+    /// @param line Line to parse from.
+    /// @param inputStream Input stream to get more lines from, if necessary.
+    /// @param startedOnNewLine True if line is a line from the original file. False if line is a continuation of a previous line, a part of it being already parsed.
+    /// @throw std::runtime_error if the parser encounters an error and the recovery mode is set to strict.
+    /// @return shared_ptr to the parsed token
     std::shared_ptr<tokens::SemanticPbnToken> parseToken(std::string &line, std::istream &inputStream, bool startedOnNewLine);
 
 private:

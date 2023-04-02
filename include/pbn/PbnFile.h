@@ -26,9 +26,12 @@ private:
     /// @brief All board contexts in the file.
     std::vector<BoardContext> boardContexts;
 
+    /// @brief Maps board context id to token ranges, tuples represent in order: start index, number of tokens
     struct TokenRange
     {
+        /// @brief Index of the first token in the range in the tokens vector.
         size_t StartIndex;
+        /// @brief Number of tokens in the range, starting at 1.
         size_t TokenCount;
     };
 
@@ -36,7 +39,9 @@ private:
     std::map<BoardContextId, TokenRange>
         BoardContextIdToTokenIndex;
 
+    /// @brief Returns the range of the token at the given index.
     std::optional<BoardContextId> findRange(size_t token_index) const;
+    /// @brief Returns the range of the token given.
     std::optional<BoardContextId> findRange(std::shared_ptr<SemanticPbnToken> token) const;
 
 public:
@@ -109,6 +114,10 @@ public:
      */
     void deleteToken(std::shared_ptr<SemanticPbnToken> token);
 
+    /**
+     * @brief Print file contents to the stream in export format;
+     * @param stream Stream to print to.
+     */
     void serialize(std::ostream &stream) const;
 
 private:

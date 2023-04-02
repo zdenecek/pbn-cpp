@@ -10,7 +10,7 @@
 
 namespace tokens
 {
-
+    /// @brief Represent a version directive, which is a line in the format "% PBN X.Y"
     class VersionEscapedLine : public tokens::EscapedLine
     {
 

@@ -16,17 +16,17 @@ namespace tokens
         std::string content;
 
     public:
-        // Construct a Tag object using a tag name and the content of
-        // the tag.  The tag name and content should not contain angle
-        // brackets or ampersands.
+        /// @brief Construct a Tag object using a tag name and the content of the tag.  The tag name and content should not contain angle brackets or ampersands as per specification.
         Tag(const std::string &tagname, const std::string &content);
 
-        // Returns the tagname of this tag
+        /// @brief Returns the tagname of this tag
         [[nodiscard]] const std::string &getTagname() const;
 
-        // This function returns a string containing the contents of the file.
+        /// @brief This function returns a string containing the contents of the file.
         [[nodiscard]] const std::string &getContent() const;
+ 
 
+        /// @brief Helper method returns true if the tag represents a so called supplementary section or a TableTag
         virtual bool isTableTag() const;
 
         static constexpr std::string_view typeName = "Tag";

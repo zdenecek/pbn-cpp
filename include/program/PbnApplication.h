@@ -6,6 +6,7 @@
 
 constexpr auto VERSION = "0.1";
 
+/// @brief This class represents the pbn application.
 class Application
 {
 
@@ -15,9 +16,12 @@ private:
 
 public:
     bool verbose = false;
+    
+    /// @brief Application instance sigleton
     static Application *getInstance();
 
     Application();
 
+    /// @brief Entry point; Runs the application with the given command line arguments. 
     int run(int argc, char *argv[]);
 };

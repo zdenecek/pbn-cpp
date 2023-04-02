@@ -3,6 +3,9 @@
 #include <vector>
 #include <memory>
 
+namespace manipulators {
+
+
 PbnStripper::PbnStripper() : PbnStripper(
                                  {
                                      "Generator",
@@ -33,4 +36,5 @@ void PbnStripper::strip(PbnFile &file)
         file.deleteToken(token);
         i--;
     }
+}
 }

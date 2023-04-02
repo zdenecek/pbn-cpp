@@ -7,7 +7,8 @@
 
 namespace tokens
 {
-
+    /// @brief Represent metadata about a column in a suplementary section
+    /// @see TableTag
     struct ColumnInfo
     {
         static constexpr char LEFT_ALIGN_CHAR = 'L';
@@ -40,10 +41,12 @@ namespace tokens
         void setFormatting(std::ostream &to) const;
     };
 
+    /// @brief Represents a so called supplementary section, i.e. a Tag followed by value table
     class TableTag : public Tag
     {
 
     public:
+        /// @brief Struct used to iterate over the rows of the table
         struct rows
         {
 
@@ -78,9 +81,12 @@ namespace tokens
             [[nodiscard]] iterator end() const;
         };
 
+
         TableTag(const std::string &tagname, const std::string &content, std::vector<std::string> &&values);
 
+        /// @brief Get the values of the supplementary section or Table tag as a one-dimensional vector with all the values.
         [[nodiscard]] const std::vector<std::string> &getValues() const;
+        /// @brief Get the object that can be used to iterate the values the supplementary section or Table tag.
         [[nodiscard]] rows getRows() const;
 
         static constexpr std::string_view typeName = "Table Tag";
