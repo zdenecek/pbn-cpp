@@ -7,6 +7,7 @@
 #include <fstream>
 #include <istream>
 #include <string>
+#include <iomanip>
 
 #include <boost/program_options.hpp>
 
@@ -79,7 +80,7 @@ int Application::run(int ac, char *av[])
     return this->handleFile(filename, vm);
 }
 
-int Application::handleFile(std::string filename, po::variables_map &vm)
+int Application::handleFile(std::string filename, po::variables_map &)
 {  
 
     std::ifstream inputFile;
@@ -97,7 +98,11 @@ int Application::handleFile(std::string filename, po::variables_map &vm)
     file.normalize();
 
     for (auto &token: file.getTokens()) {
-        std::cout << "<" << token->typeName() << "> " << token->toString() << std::endl;
+        auto name =  "<" + token->typeName() + ">";
+
+        std::cout << std::left << std::setw(16) << name << std::setw(0);
+        
+        std::cout << token->toString() << std::endl;
     }
     return 0;
 }

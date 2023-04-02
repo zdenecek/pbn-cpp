@@ -24,6 +24,8 @@ struct ColumnInfo {
     size_t alignment_width;
 
     ColumnInfo() : ordering(Ordering::None), alignment(Alignment::None) {}
+
+    void setFormatting(std::ostream& to) const;
 };
 
 class TableTag  : public Tag {

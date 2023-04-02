@@ -2,6 +2,7 @@
 #include <string>
 #include <stdexcept>
 #include <algorithm>
+#include <iomanip>
 
 #include "TableTag.h"
 #include "strings.h"
@@ -89,19 +90,25 @@ TableTag::rows TableTag::getRows() const
 
 void TableTag::serialize(std::ostream& to) const 
 {
+    
+    auto ostream_state { to.flags() }; // save stream configuration
     Tag::serialize(to);
-    for (auto &&value : this->getRows())
+    for (auto &&row : this->getRows())
     {
         to << "\n";
         bool first = true;
-        for (auto &&v : value) {
+        for (auto i = 0; i < this->column_count; i++) {
             if(first) 
                 first = false;
             else 
                 to << " ";
-            to << v;
+
+
+            this->column_info[i].setFormatting(to);
+            to << row[i];
         }
     }
+    to.flags(ostream_state);  // restore stream configuration
     to << "\n";
 }
 
@@ -163,4 +170,17 @@ TableTag::rows::iterator TableTag::rows::begin() const
 TableTag::rows::iterator TableTag::rows::end() const
 {
     return TableTag::rows::iterator(this->values.end(), this->column_count);
+}
+
+void ColumnInfo::setFormatting(std::ostream &to) const
+{
+    if(this->alignment == Alignment::None) return;
+
+    if(this->alignment == Alignment::Left) {
+        to << std::left;
+    }
+    if(this->alignment == Alignment::Right)  {
+        to << std::right;
+    }
+    to << std::setw(this->alignment_width);
 }
