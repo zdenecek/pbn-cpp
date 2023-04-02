@@ -43,6 +43,7 @@ int Application::run(int ac, char *av[])
     ("strip,s", "remove all results, site and event information")
     ("analyze,a", po::value<std::string>()->implicit_value("OptimumResultTable"), "create double dummy analyses for each board")
     ("output,o", po::value<std::string>(), "output file name, if not specified, the program will use the input file name")
+    ("overwrite,w", "overwrite the input file with output")
     ("info", "print information about the file")
     ;
 
@@ -133,13 +134,18 @@ int Application::handleFile(std::string filename, po::variables_map &vm)
     }
 
     auto serializer = PbnSerializer();
-    if (vm.count("output") == 0)
+    
+    if (vm.count("output") != 0)
     {
-        serializer.serialize(file, std::cout);
+        serializer.serialize(file, vm["output"].as<std::string>());
+    }
+    else if(vm.count("overwrite")) {
+        
+        serializer.serialize(file, filename);
     }
     else
     {
-        serializer.serialize(file, vm["output"].as<std::string>());
+        serializer.serialize(file, std::cout);
     }
 
     return 0;
