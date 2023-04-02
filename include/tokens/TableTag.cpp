@@ -7,37 +7,33 @@
 #include "TableTag.h"
 #include "strings.h"
 
-constexpr auto LEFT_ALIGN_CHAR = 'L';
-constexpr auto RIGHT_ALIGN_CHAR = 'R';
-constexpr auto ORDERING_INFO_SEPARATOR = '\\';
-constexpr auto ASCENDING_ORDERING_CHAR = '+';
-constexpr auto DESCENDING_ORDERING_CHAR = '-';
+namespace tokens
+{
 
 ColumnInfo parse_single_column_info(const std::string &info)
 {
-
     auto str = info;
 
     ColumnInfo col_info{};
 
     // Ordering
-    if (str[0] == ASCENDING_ORDERING_CHAR || str[0] == DESCENDING_ORDERING_CHAR)
+    if (str[0] == ColumnInfo::ASCENDING_ORDERING_CHAR || str[0] == ColumnInfo::DESCENDING_ORDERING_CHAR)
     {
-        col_info.ordering = str[0] == ASCENDING_ORDERING_CHAR ? ColumnInfo::Ordering::Ascending : ColumnInfo::Ordering::Descending;
+        col_info.ordering = str[0] == ColumnInfo::ASCENDING_ORDERING_CHAR ? ColumnInfo::Ordering::Ascending : ColumnInfo::Ordering::Descending;
         str = str.substr(1);
     }
 
     // Alignment
-    if (str.find(ORDERING_INFO_SEPARATOR) != std::string::npos)
+    if (str.find(ColumnInfo::ORDERING_INFO_SEPARATOR) != std::string::npos)
     {
-        auto parts = split(str, ORDERING_INFO_SEPARATOR);
+        auto parts = split(str, ColumnInfo::ORDERING_INFO_SEPARATOR);
         if (parts.size() != 2)
             throw std::runtime_error("Invalid column format: " + info);
         col_info.name = parts[0];
 
-        if (parts[1].back() == RIGHT_ALIGN_CHAR || parts[1].back() == LEFT_ALIGN_CHAR)
+        if (parts[1].back() == ColumnInfo::RIGHT_ALIGN_CHAR || parts[1].back() == ColumnInfo::LEFT_ALIGN_CHAR)
         {
-            col_info.alignment = parts[1].back() == LEFT_ALIGN_CHAR ? ColumnInfo::Alignment::Left : ColumnInfo::Alignment::Right;
+            col_info.alignment = parts[1].back() == ColumnInfo::LEFT_ALIGN_CHAR ? ColumnInfo::Alignment::Left : ColumnInfo::Alignment::Right;
             parts[1].pop_back();
         }
         try
@@ -78,9 +74,9 @@ bool TableTag::isTableTag() const
     return true;
 }
 
-std::string TableTag::typeName() const
+std::string TableTag::getTypeName() const
 {
-    return "TableTag";
+    return std::string(this->typeName);
 }
 
 TableTag::rows TableTag::getRows() const
@@ -185,4 +181,6 @@ void ColumnInfo::setFormatting(std::ostream &to) const
         to << std::right;
     }
     to << std::setw(this->alignment_width);
+}
+
 }

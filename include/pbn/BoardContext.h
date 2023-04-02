@@ -6,6 +6,9 @@
 
 #include "tokens/Tag.h"
 
+using tokens::Tag;
+using tokens::SemanticPbnToken;
+
 using BoardNumber = size_t;
 using BoardContextId = size_t;
 
@@ -33,19 +36,20 @@ public:
 
     [[nodiscard]] BoardNumber getBoardNumber() const;
 
-    struct tokens
+    struct context_tokens
     {
         friend class BoardContext;
         friend class PbnFile;
 
     private:
         const BoardContext &context;
-        explicit tokens(const BoardContext &context) : context(context) {}
+        explicit context_tokens(const BoardContext &context) : context(context) {}
 
     public:
         std::vector<std::shared_ptr<SemanticPbnToken>>::const_iterator begin();
         std::vector<std::shared_ptr<SemanticPbnToken>>::const_iterator end();
     };
 
-    [[nodiscard]] tokens getTokens() const;
+    [[nodiscard]] context_tokens getTokens() const;
 };
+

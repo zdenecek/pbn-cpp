@@ -13,7 +13,8 @@ namespace tokens {
         bool isExport() const override;
 
     public:
-        std::string typeName() const override;
+        static constexpr std::string_view typeName = "Export Directive";
+        std::string getTypeName() const override;
 
     private:
 
@@ -34,7 +35,7 @@ namespace tokens {
         to << exportLine;
     }
 
-    std::string ExportEscapedLine::typeName() const {
-        return "Export Directive";
+    std::string ExportEscapedLine::getTypeName() const {
+        return std::string(this->typeName);
     }
 }

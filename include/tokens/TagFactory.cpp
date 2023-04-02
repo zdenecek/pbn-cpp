@@ -7,6 +7,8 @@
 #include "Tag.h"
 #include "TableTag.h"
 
+namespace tokens
+{
 
 std::set<std::string> tableTags = {"ActionTable",
                             "AuctionTimeTable",
@@ -28,4 +30,6 @@ std::shared_ptr<Tag> TagFactory::createTableTag(std::string tagName, std::string
 
 std::shared_ptr<Tag> TagFactory::createTag(std::string tagName, std::string tagContent) {
     return std::make_shared<Tag>(tagName, tagContent);
+}
+
 }

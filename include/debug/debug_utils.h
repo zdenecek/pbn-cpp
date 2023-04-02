@@ -20,7 +20,7 @@ struct Debug
             out << std::left
                 << std::setw(6) << i
                 << std::setw(2) << ": "
-                 << std::setw(20) << ("<" + token->typeName() + ">");
+                 << std::setw(20) << ("<" + token->getTypeName() + ">");
             out.flags(saved_flags);
 
             token->serialize(out);

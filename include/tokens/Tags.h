@@ -1,5 +1,5 @@
 
-namespace tags {
+namespace tokens::tags {
 
     // Known tags
     constexpr auto EVENT                = "Event";

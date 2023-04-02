@@ -6,6 +6,8 @@
 #include "Tag.h"
 #include "TagFactory.h"
 
+using tokens::TagFactory;
+
 class PbnParser
 {
 

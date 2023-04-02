@@ -5,7 +5,8 @@
 
 #include "SemanticPbnToken.h"
 
-
+namespace tokens
+{
 
 // This class represents a tag in the Semantic PBN format.
 class Tag : public SemanticPbnToken {
@@ -28,9 +29,12 @@ public:
 
     virtual bool isTableTag() const;
 
-    std::string typeName() const override;
+    static constexpr std::string_view typeName = "Tag";
+    std::string getTypeName() const override;
 
     bool isTag() const override;
 
     void serialize(std::ostream& to) const override;
 };
+
+}

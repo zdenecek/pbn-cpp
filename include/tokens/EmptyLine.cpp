@@ -6,8 +6,8 @@ namespace tokens {
         // do nothing
     }
 
-    std::string EmptyLine::typeName() const {
-        return "Empty Line";
+    std::string EmptyLine::getTypeName() const {
+        return std::string(this->typeName);
     }
 
     bool EmptyLine::isTag() const {

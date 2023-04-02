@@ -2,9 +2,14 @@
 
 #include <sstream>
 
-std::string SemanticPbnToken::toString() const
+namespace tokens
 {
-    std::stringstream ss;
-    this->serialize(ss);
-    return ss.str();
+
+    std::string SemanticPbnToken::toString() const
+    {
+        std::stringstream ss;
+        this->serialize(ss);
+        return ss.str();
+    }
+
 }

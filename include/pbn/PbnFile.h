@@ -9,10 +9,13 @@
 
 #include "tokens/SemanticPbnToken.h"
 #include "BoardContext.h"
+
+using tokens::SemanticPbnToken;
+
 class PbnFile
 {
     friend class PbnParser;
-    friend class BoardContext::tokens;
+    friend class BoardContext::context_tokens;
     friend class Debug;
 
 private:

@@ -15,13 +15,15 @@ namespace tokens {
 
         std::string versionString;
     public:
+        static constexpr std::string_view typeName = "Version Directive";
+
         explicit VersionEscapedLine(const std::string &versionString);
 
         std::string getVersionString() const;
 
         bool isExport() const override;
 
-        std::string typeName() const override;
+        std::string getTypeName() const override;
 
         bool isVersion() const override;
 
@@ -55,9 +57,8 @@ namespace tokens {
         this->versionString = extractVersionString(content);
     }
 
-    std::string VersionEscapedLine::typeName() const {
-        return "Version Directive";
+    std::string VersionEscapedLine::getTypeName() const {
+        return std::string(this->typeName);
     }
-
 }
 

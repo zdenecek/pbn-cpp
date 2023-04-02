@@ -4,15 +4,17 @@
 #include <ostream>
 #include <string>
 
-
+namespace tokens
+{
 class CustomEscapedLine : public tokens::EscapedLine {
 
 public:
     std::string content;
+    static constexpr std::string_view typeName = "Escaped Line";
 
     explicit CustomEscapedLine(const std::string &content);
 
-    std::string typeName() const override;
+    std::string getTypeName() const override;
 
     [[nodiscard]] bool isExport() const override;
 
@@ -37,7 +39,8 @@ void CustomEscapedLine::serialize(std::ostream& to) const  {
     to << tokens::escapeCharacter << this->content;
 }
 
-std::string CustomEscapedLine::typeName() const {
-    return "Escaped Line";
+std::string CustomEscapedLine::getTypeName() const {
+    return std::string(this->typeName);
 }
 
+}

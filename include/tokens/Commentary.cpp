@@ -12,8 +12,8 @@ namespace tokens {
             to << "{" << this->content << "}";
     }
 
-    std::string Commentary::typeName() const {
-        return "Commentary";
+    std::string Commentary::getTypeName() const {
+        return  std::string(this->typeName);
     }
 
     Commentary::Commentary(CommentaryFormat format, bool startsOnNewLine, const std::string &content) : format(format),
@@ -21,8 +21,8 @@ namespace tokens {
                                                                                                            startsOnNewLine),
                                                                                                    content(content) {}
 
-    bool Commentary::isTag() const {
-        return false;
+    bool Commentary::isCommentary() const {
+        return true;
     }
 
 } // tokens

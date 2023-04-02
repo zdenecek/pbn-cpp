@@ -51,7 +51,7 @@ void PbnFile::appendToken(std::shared_ptr<SemanticPbnToken> token)
 
     auto tag = std::dynamic_pointer_cast<Tag>(token);
 
-    if (tag->getTagname() == tags::BOARD)
+    if (tag->getTagname() == tokens::tags::BOARD)
     {
         auto number = std::stoi(tag->getContent());
         auto& board = this->boardContexts.emplace_back(number, *this);

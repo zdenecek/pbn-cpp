@@ -10,6 +10,11 @@
 class PbnStripper {
 
 public:
-    static void strip(PbnFile &file);
+    std::vector<std::string> allowed_tags;
+
+    PbnStripper();
+    explicit PbnStripper(std::vector<std::string> allowed_tags) : allowed_tags(allowed_tags) {}
+
+    void strip(PbnFile &file);
 
 };

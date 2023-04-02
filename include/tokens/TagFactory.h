@@ -6,6 +6,8 @@
 #include <vector>
 #include "Tag.h"
 
+namespace tokens
+{
 class TagFactory {
 
 public:
@@ -14,3 +16,4 @@ public:
 
     bool isTableTag(const std::string &tagName);
 };
+}

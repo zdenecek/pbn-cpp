@@ -6,10 +6,10 @@ void tokens::TextLine::serialize(std::ostream& to) const {
 
 tokens::TextLine::TextLine(const std::string &content) : content(content) {}
 
-std::string tokens::TextLine::typeName() const {
-    return "Unrecognized Text Line";
+std::string tokens::TextLine::getTypeName() const {
+    return std::string(this->typeName);
 }
 
-bool tokens::TextLine::isTag() const {
-    return false;
+bool tokens::TextLine::isTextLine() const {
+    return true;
 }

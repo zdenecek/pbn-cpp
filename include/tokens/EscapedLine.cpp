@@ -27,8 +27,8 @@ namespace tokens {
         return make_shared<CustomEscapedLine>(contents.substr(1));
     }
 
-    bool EscapedLine::isTag() const {
-        return false;
+    bool EscapedLine::isEscapedLine() const {
+        return true;
     }
 
     bool EscapedLine::isDirective() const {

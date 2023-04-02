@@ -4,17 +4,17 @@
 #include <string>
 #include <ostream>
 
-namespace tokens {
+namespace tokens
+{
 
-
-    class EmptyLine : public SemanticPbnToken {
+    class EmptyLine : public SemanticPbnToken
+    {
     public:
-        void serialize(std::ostream& to) const override;
-        std::string typeName() const override;
-
+        static constexpr std::string_view typeName = "Empty Line";
+       
+        std::string getTypeName() const override;
         bool isTag() const override;
-
+        void serialize(std::ostream &to) const override;
     };
 
 }
-

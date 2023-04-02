@@ -122,7 +122,9 @@ int Application::handleFile(std::string filename, po::variables_map &vm)
     }
     
     if(vm.count("strip") != 0) {
-        PbnStripper::strip(file);
+        PbnStripper stripper;
+
+        stripper.strip(file);
     }
 
     auto serializer = PbnSerializer();

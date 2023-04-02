@@ -1,5 +1,8 @@
 #include "Tag.h"
 
+namespace tokens
+{
+
 const std::string &Tag::getTagname() const {
     return this->tagname;
 }
@@ -8,8 +11,8 @@ const std::string &Tag::getContent() const {
     return this->content;
 }
 
-std::string Tag::typeName() const {
-    return "Tag";
+std::string Tag::getTypeName() const {
+    return std::string(this->typeName);
 }
 
 void Tag::serialize(std::ostream& to) const  {
@@ -24,4 +27,6 @@ bool Tag::isTag() const {
 
 bool Tag::isTableTag() const {
     return false;
+}
+
 }
