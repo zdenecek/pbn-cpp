@@ -27,8 +27,15 @@ public:
     [[nodiscard]] DealContextObs getDeal(size_t number);
     [[nodiscard]] std::vector<std::shared_ptr<SemanticPbnToken>>& getTokens();
 
+    /**
+     * @brief Strips the file. This function will remove all comments 
+     * escaped lines that are not directives and all the information
+     * about the results, the site, tournament, etc.
+     * Keeps only the deal information.
+     */
     void normalize();
     void insertToken(std::shared_ptr<SemanticPbnToken> token);
+    void insertToken(size_t at, std::shared_ptr<SemanticPbnToken> token);
 	
 };
 

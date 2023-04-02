@@ -27,11 +27,16 @@ const std::vector<DealContext> &PbnFile::getDeals() const {
 
 
 void PbnFile::insertToken(std::shared_ptr<SemanticPbnToken> token) {
+    this->tokens.push_back(token);
+}
 
+void PbnFile::insertToken(size_t at, std::shared_ptr<SemanticPbnToken> token)
+{
+    this->tokens.insert(this->tokens.begin() + at, token);
 }
 
 void PbnFile::normalize() {
-
+    // TODO
 }
 
 

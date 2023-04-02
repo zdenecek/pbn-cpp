@@ -10,9 +10,8 @@
 #include <iostream>
 
 /**
- * This Parser is to be replaced with a generated one, something like ANTLR or Flex-Bison
+ * This Parser is probably to be replaced with a generated one, something like boost::spirit or Flex-Bison
  */
-
 
 using namespace std;
 using namespace tokens;
@@ -103,7 +102,7 @@ void PbnParser::parseTag(PbnFile &file, string &line, istream &inputStream, bool
 
 }
 
-string PbnParser::parseMultilineComment(PbnFile &file,  string &line, istream &inputStream, bool startedOnNewLine) {
+string PbnParser::parseMultilineComment(PbnFile &file, string &line, istream &inputStream, bool startedOnNewLine) {
     auto start = line.find('{');
     string line2 = line.substr(start);
     string content;

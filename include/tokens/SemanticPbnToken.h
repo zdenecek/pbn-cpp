@@ -11,6 +11,5 @@ public:
     virtual std::string typeName() const = 0;
 
     virtual bool isTag() const = 0;
-
 };
 

@@ -20,42 +20,61 @@ struct ColumnInfo {
     Ordering ordering;
     Alignment alignment;
     size_t alignment_width;
+
+    ColumnInfo() : ordering(Ordering::None), alignment(Alignment::None) {}
 };
 
 class TableTag  : public Tag {
 
 public:
+    struct rows {
 
-    struct row_iterator {
-        std::vector<std::string>::iterator it;
-        int column_count;
+    private:
+        const std::vector<std::string>& values;
+        size_t column_count;
 
-        row_iterator(std::vector<std::string>::iterator it, int column_count) : it(it), column_count(column_count) {}
+    public:
+        explicit rows(const std::vector<std::string>& values, size_t columns) : values(values), column_count(columns) {}
 
-        row_iterator &operator++();
+        struct iterator {
+                private:
+                std::vector<std::string>::const_iterator it;
+                size_t column_count;
+                public:
 
-        row_iterator operator++(int);
+                iterator(std::vector<std::string>::const_iterator it, size_t column_count) : it(it), column_count(column_count) {}
 
-        bool operator==(const row_iterator &rhs) const;
+                iterator &operator++();
 
-        bool operator!=(const row_iterator &rhs) const;
+                iterator operator++(int);
 
-        std::string &operator*();
+                bool operator==(const iterator &rhs) const;
 
-        std::string *operator->();
+                bool operator!=(const iterator &rhs) const;
+
+                std::vector<std::string> operator*();
+        };
+
+        [[nodiscard]] iterator begin() const;
+        [[nodiscard]] iterator end() const;
     };
+
 
     TableTag(const std::string &tagname, const std::string &content, std::vector<std::string> &&values);
 
     [[nodiscard]] const std::vector<std::string> &getValues() const;
+    [[nodiscard]] rows getRows() const;
 
     bool isTableTag() const override;
 
     std::string toString() const override;
+    std::string typeName() const override;
+
 
 private:
 
     std::vector<std::string> values;
+    std::vector<ColumnInfo> column_info;
     int column_count;
 
     void parse_column_info();
