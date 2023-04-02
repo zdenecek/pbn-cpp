@@ -3,17 +3,29 @@
 #include "PbnFile.h"
 
 #include <stdexcept>
+#include <cassert>
 
-static int id = 0;
-static int getNewId() {
+static BoardContextId id = 0;
+static BoardContextId getNewId()
+{
     return id++;
 }
 
 void BoardContext::applyTag(std::shared_ptr<Tag> token)
 {
-    if(token->getTagname() == tags::BOARD && this->boardNumber != 0)
+    if (token->getTagname() == tags::BOARD && this->boardNumber != 0)
     {
         throw std::runtime_error("Internal error: Board number cannot be changed.");
+    }
+}
+
+void BoardContext::unapplyTag(std::shared_ptr<Tag> token)
+{
+    assert(token->getTagname() != tags::BOARD || this->boardNumber != 0 && "Internal error: Board number cannot be changed.");
+
+    if (token->getTagname() == tags::BOARD)
+    {
+        this->boardNumber = 0;
     }
 }
 
@@ -29,17 +41,17 @@ BoardNumber BoardContext::getBoardNumber() const
 
 BoardContext::tokens BoardContext::getTokens() const
 {
-    return tokens( *this);
+    return tokens(*this);
 }
 
 std::vector<std::shared_ptr<SemanticPbnToken>>::const_iterator BoardContext::tokens::begin()
 {
-    auto& range = this->context.pbnFile.BoardContextIdToTokenIndex[this->context.id];
+    auto &range = this->context.pbnFile.BoardContextIdToTokenIndex[this->context.id];
     return this->context.pbnFile.getTokens().begin() + range.StartIndex;
 }
 
 std::vector<std::shared_ptr<SemanticPbnToken>>::const_iterator BoardContext::tokens::end()
 {
-    auto& range = this->context.pbnFile.BoardContextIdToTokenIndex[this->context.id];
+    auto &range = this->context.pbnFile.BoardContextIdToTokenIndex[this->context.id];
     return this->begin() + range.TokenCount;
 }

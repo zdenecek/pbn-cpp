@@ -23,9 +23,9 @@ bool TagFactory::isTableTag(const std::string& tagName) {
 }
 
 std::shared_ptr<Tag> TagFactory::createTableTag(std::string tagName, std::string tagContent, std::vector<std::string> &&values) {
-    return make_shared<TableTag>(tagName, tagContent, std::move(values));
+    return std::make_shared<TableTag>(tagName, tagContent, std::move(values));
 }
 
 std::shared_ptr<Tag> TagFactory::createTag(std::string tagName, std::string tagContent) {
-    return make_shared<Tag>(tagName, tagContent);
+    return std::make_shared<Tag>(tagName, tagContent);
 }

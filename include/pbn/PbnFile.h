@@ -15,7 +15,7 @@ class PbnFile
     friend class BoardContext::tokens;
     friend class Debug;
 
-protected:
+private:
     /// @brief All tokens in the file.
     std::vector<std::shared_ptr<SemanticPbnToken>> tokens;
 
@@ -32,8 +32,9 @@ protected:
     std::map<BoardContextId, TokenRange>
         BoardContextIdToTokenIndex;
 
-    void createBoardContext(BoardNumber number);
-
+    BoardContextId findRange(size_t token_index) const;
+    BoardContextId findRange(std::shared_ptr<SemanticPbnToken> token) const;
+    
 public:
     PbnFile() : tokens(), boardContexts(), BoardContextIdToTokenIndex() {}
 
@@ -98,12 +99,19 @@ public:
     void replaceToken(std::shared_ptr<SemanticPbnToken> from, std::shared_ptr<SemanticPbnToken> to);
 
     /**
-     * @brief Delete give token
+     * @brief Delete given token
      * Does nothing if token is not in the file.
      * @param token shared pointer to the token to delete, the token has to be the same object in the memory.
      */
     void deleteToken(std::shared_ptr<SemanticPbnToken> token);
 
     void serialize(std::ostream &stream) const;
+
+    private:
+    /**
+     * @brief Delete given token
+     * Does nothing if token is not in the file.
+     */
+    void deleteToken(const std::vector<std::shared_ptr<SemanticPbnToken>>::iterator &it);
 
 };

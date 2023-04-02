@@ -21,16 +21,11 @@ private:
     BoardContextId id;
     BoardNumber boardNumber;
     PbnFile &pbnFile;
-    void applyTag(std::shared_ptr<Tag> token);
     void initId();
+    void applyTag(std::shared_ptr<Tag> token);
+    void unapplyTag(std::shared_ptr<Tag> token);
 
 public:
-    std::shared_ptr<Tag> boardTag;
-
-    /// @brief Pointer to the deal tag
-    /// Stored here for convenience
-    std::shared_ptr<Tag> dealTag;
-
     BoardContext(BoardNumber boardNumber, PbnFile &pbnFile) : boardNumber(boardNumber), pbnFile(pbnFile) {
         initId();
     }
