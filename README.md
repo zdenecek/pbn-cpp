@@ -12,9 +12,19 @@ PBN utilizes some libraries:
 
 ## Supported functions
 
+- parse a file and validate it 
 - printing overview information about a file
 - stripping a file of unnecessary parts
 - creating board analyses in a file
+
+## Features plan
+
+- exports to pdf, html
+- stricter adherence to PBN standard (currently it is not fully compliant)
+  - validate
+  - support more obscure import variant
+  - check used features against declared version
+- pbn generation using external tools (e.g. Bigdeal)
 
 ## User docs
 
