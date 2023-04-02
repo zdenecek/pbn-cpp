@@ -12,8 +12,8 @@ std::string Tag::typeName() const {
     return "Tag";
 }
 
-std::string Tag::toString() const {
-    return "[" + this->tagname + " \"" +  this->content + "\"]";
+void Tag::serialize(std::ostream& to) const  {
+    to << "[" << this->tagname << " \"" <<  this->content << "\"]";
 }
 
 Tag::Tag(const std::string &tagname, const std::string &content) : tagname(tagname), content(content) {}

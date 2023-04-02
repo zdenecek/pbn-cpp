@@ -5,11 +5,11 @@
 
 namespace tokens {
 
-    std::string Commentary::toString() const {
+    void Commentary::serialize(std::ostream& to) const {
         if(this->format == CommentaryFormat::Semicolon)
-            return  ";" + this->content;
+            to << ";" << this->content;
         else
-            return  "{" + this->content + "}";
+            to << "{" << this->content << "}";
     }
 
     std::string Commentary::typeName() const {

@@ -1,7 +1,7 @@
 #include "TextLine.h"
 
-std::string tokens::TextLine::toString() const {
-    return this->content;
+void tokens::TextLine::serialize(std::ostream& to) const {
+    to << this->content;
 }
 
 tokens::TextLine::TextLine(const std::string &content) : content(content) {}

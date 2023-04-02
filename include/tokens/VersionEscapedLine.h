@@ -3,6 +3,8 @@
 #include <cassert>
 #include <regex>
 #include <string>
+#include <ostream>
+
 
 #include "EscapedLine.h"
 #include "utils/strings.h"
@@ -23,7 +25,7 @@ namespace tokens {
 
         bool isVersion() const override;
 
-        std::string toString() const override;
+        void serialize(std::ostream& to) const override;
 
     };
 
@@ -41,8 +43,8 @@ namespace tokens {
         return false;
     }
 
-    std::string VersionEscapedLine::toString() const {
-        return std::string(versionLinePrefix) + " " + this->versionString;
+    void VersionEscapedLine::serialize(std::ostream& to) const  {
+        to << versionLinePrefix << " " << this->versionString;
     }
 
     std::string VersionEscapedLine::getVersionString() const {

@@ -2,8 +2,8 @@
 
 namespace tokens {
 
-    std::string EmptyLine::toString() const {
-        return std::string();
+    void EmptyLine::serialize(std::ostream&) const {
+        // do nothing
     }
 
     std::string EmptyLine::typeName() const {

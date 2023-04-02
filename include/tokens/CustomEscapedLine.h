@@ -1,6 +1,9 @@
 #pragma  once
 
 #include "EscapedLine.h"
+#include <ostream>
+#include <string>
+
 
 class CustomEscapedLine : public tokens::EscapedLine {
 
@@ -15,7 +18,7 @@ public:
 
     [[nodiscard]] bool isVersion() const override;
 
-    std::string toString() const override;
+    void serialize(std::ostream& to) const override;
 };
 
 CustomEscapedLine::CustomEscapedLine(const std::string &content) : content(content) {
@@ -30,8 +33,8 @@ bool CustomEscapedLine::isVersion() const {
     return false;
 }
 
-std::string CustomEscapedLine::toString() const {
-    return tokens::escapeCharacter + this->content;
+void CustomEscapedLine::serialize(std::ostream& to) const  {
+    to << tokens::escapeCharacter << this->content;
 }
 
 std::string CustomEscapedLine::typeName() const {

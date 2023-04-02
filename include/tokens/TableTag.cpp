@@ -87,17 +87,22 @@ TableTag::rows TableTag::getRows() const
     return rows(this->values, this->column_count);
 }
 
-std::string TableTag::toString() const
+void TableTag::serialize(std::ostream& to) const 
 {
-    std::string s = Tag::toString();
+    Tag::serialize(to);
     for (auto &&value : this->getRows())
     {
-        s += "\n";
-        for (auto &&v : value)
-            s += v + " ";
+        to << "\n";
+        bool first = true;
+        for (auto &&v : value) {
+            if(first) 
+                first = false;
+            else 
+                to << " ";
+            to << v;
+        }
     }
-    s += "\n";
-    return s;
+    to << "\n";
 }
 
 void TableTag::parse_column_info()

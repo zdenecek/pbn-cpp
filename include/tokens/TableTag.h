@@ -1,6 +1,8 @@
 #pragma once
 
 #include <vector>
+#include <ostream>
+
 #include "Tag.h"
 
 struct ColumnInfo {
@@ -67,7 +69,7 @@ public:
 
     bool isTableTag() const override;
 
-    std::string toString() const override;
+    void serialize(std::ostream& to) const override;
     std::string typeName() const override;
 
 

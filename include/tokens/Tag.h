@@ -1,6 +1,8 @@
 #pragma once
 
 #include <string>
+#include <ostream>
+
 #include "SemanticPbnToken.h"
 
 
@@ -30,5 +32,5 @@ public:
 
     bool isTag() const override;
 
-    std::string toString() const override;
+    void serialize(std::ostream& to) const override;
 };

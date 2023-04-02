@@ -2,6 +2,8 @@
 #pragma  once
 
 #include <string>
+#include <ostream>
+
 
 #include "EscapedLine.h"
 
@@ -17,7 +19,7 @@ namespace tokens {
 
         bool isVersion() const override;
 
-        std::string toString() const override;
+        void serialize(std::ostream& to) const override;
     };
 
     bool ExportEscapedLine::isExport() const {
@@ -28,8 +30,8 @@ namespace tokens {
         return false;
     }
 
-    std::string ExportEscapedLine::toString() const {
-        return std::string(exportLine);
+    void ExportEscapedLine::serialize(std::ostream& to) const  {
+        to << exportLine;
     }
 
     std::string ExportEscapedLine::typeName() const {

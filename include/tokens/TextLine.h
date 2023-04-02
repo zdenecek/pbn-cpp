@@ -4,6 +4,8 @@
 #include "SemanticPbnToken.h"
 
 #include <string>
+#include <ostream>
+
 
 namespace tokens {
 
@@ -13,7 +15,7 @@ protected:
 
 public:
     explicit TextLine(const std::string &content);
-    std::string toString() const override;
+    void serialize(std::ostream& to) const override;
 
     bool isTag() const override;
 

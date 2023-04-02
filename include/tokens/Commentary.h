@@ -1,6 +1,7 @@
 #pragma once
 
 #include <string>
+#include <ostream>
 #include "SemanticPbnToken.h"
 
 namespace tokens {
@@ -14,7 +15,7 @@ namespace tokens {
     public:
         std::string typeName() const override;
         Commentary(CommentaryFormat format, bool startsOnNewLine, const std::string &content);
-        std::string toString() const override;
+        void serialize(std::ostream& to) const override;
 
         bool isTag() const override;
 
