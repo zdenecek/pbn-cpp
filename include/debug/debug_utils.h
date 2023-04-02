@@ -27,6 +27,8 @@ struct Debug
             out << "\n";
             i++;
         }
+
+        out.flags(saved_flags);
     }
 
     static void printBoardContextRanges(const PbnFile &file, std::ostream &out)

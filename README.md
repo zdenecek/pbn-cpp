@@ -2,6 +2,8 @@
 
 PBN is a command line tool for working with Portable Bridge Notation files. 
 
+Credit project (zápočtový program) for Cpp Programming course at MFF Cuni.
+
 ## Used libraries
 
 PBN utilizes some libraries:
