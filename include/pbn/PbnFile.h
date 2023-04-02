@@ -37,7 +37,7 @@ private:
 
     BoardContextId findRange(size_t token_index) const;
     BoardContextId findRange(std::shared_ptr<SemanticPbnToken> token) const;
-    
+
 public:
     PbnFile() : tokens(), boardContexts(), BoardContextIdToTokenIndex() {}
 
@@ -110,11 +110,10 @@ public:
 
     void serialize(std::ostream &stream) const;
 
-    private:
+private:
     /**
      * @brief Delete given token
      * Does nothing if token is not in the file.
      */
     void deleteToken(const std::vector<std::shared_ptr<SemanticPbnToken>>::iterator &it);
-
 };

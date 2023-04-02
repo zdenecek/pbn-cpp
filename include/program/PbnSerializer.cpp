@@ -1,17 +1,15 @@
 #include "PbnSerializer.h"
 #include <iostream>
-#include <fstream>  
-
-
-
+#include <fstream>
 
 void PbnSerializer::serialize(const PbnFile &file, const std::string &filename) const
 {
     std::string name = filename;
-    if(!filename.ends_with(".pbn")) {
+    if (!filename.ends_with(".pbn"))
+    {
         name += ".pbn";
     }
-    std::ofstream outfile (name);
+    std::ofstream outfile(name);
     serialize(file, outfile);
     outfile.close();
 }

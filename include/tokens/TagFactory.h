@@ -1,6 +1,5 @@
 #pragma once
 
-
 #include <memory>
 #include <string>
 #include <vector>
@@ -8,12 +7,13 @@
 
 namespace tokens
 {
-class TagFactory {
+    class TagFactory
+    {
 
-public:
-    std::shared_ptr<Tag> createTag(std::string tagName, std::string tagContent);
-    std::shared_ptr<Tag> createTableTag(std::string tagName, std::string tagContent, std::vector<std::string> &&values);
+    public:
+        std::shared_ptr<Tag> createTag(std::string tagName, std::string tagContent);
+        std::shared_ptr<Tag> createTableTag(std::string tagName, std::string tagContent, std::vector<std::string> &&values);
 
-    bool isTableTag(const std::string &tagName);
-};
+        bool isTableTag(const std::string &tagName);
+    };
 }

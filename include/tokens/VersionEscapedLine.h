@@ -5,15 +5,17 @@
 #include <string>
 #include <ostream>
 
-
 #include "EscapedLine.h"
 #include "utils/strings.h"
 
-namespace tokens {
+namespace tokens
+{
 
-    class VersionEscapedLine : public tokens::EscapedLine {
+    class VersionEscapedLine : public tokens::EscapedLine
+    {
 
         std::string versionString;
+
     public:
         static constexpr std::string_view typeName = "Version Directive";
 
@@ -27,38 +29,43 @@ namespace tokens {
 
         bool isVersion() const override;
 
-        void serialize(std::ostream& to) const override;
-
+        void serialize(std::ostream &to) const override;
     };
 
-    inline std::string extractVersionString(const std::string &line) {
+    inline std::string extractVersionString(const std::string &line)
+    {
         std::string result = line.substr(versionLinePrefix.length());
         trim(result);
         return result;
     }
 
-    bool VersionEscapedLine::isExport() const {
+    bool VersionEscapedLine::isExport() const
+    {
         return false;
     }
 
-    bool VersionEscapedLine::isVersion() const {
+    bool VersionEscapedLine::isVersion() const
+    {
         return false;
     }
 
-    void VersionEscapedLine::serialize(std::ostream& to) const  {
+    void VersionEscapedLine::serialize(std::ostream &to) const
+    {
         to << versionLinePrefix << " " << this->versionString;
     }
 
-    std::string VersionEscapedLine::getVersionString() const {
+    std::string VersionEscapedLine::getVersionString() const
+    {
         return this->versionString;
     }
 
-    VersionEscapedLine::VersionEscapedLine(const std::string &content) {
+    VersionEscapedLine::VersionEscapedLine(const std::string &content)
+    {
         this->versionString = extractVersionString(content);
     }
 
-    std::string VersionEscapedLine::getTypeName() const {
+    std::string VersionEscapedLine::getTypeName() const
+    {
         return std::string(this->typeName);
     }
 }
-

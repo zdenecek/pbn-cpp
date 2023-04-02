@@ -6,17 +6,18 @@
 
 constexpr auto VERSION = "0.1";
 
-class Application {
+class Application
+{
 
 private:
     static Application *instance;
     int handleFile(std::string filename, boost::program_options::variables_map &vm);
-public:
 
+public:
     bool verbose = false;
-    static Application* getInstance();
+    static Application *getInstance();
 
     Application();
 
-    int run(int argc, char* argv[]);
+    int run(int argc, char *argv[]);
 };

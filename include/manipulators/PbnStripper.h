@@ -7,7 +7,8 @@
 #include <vector>
 #include <memory>
 
-class PbnStripper {
+class PbnStripper
+{
 
 public:
     std::vector<std::string> allowed_tags;
@@ -16,5 +17,4 @@ public:
     explicit PbnStripper(std::vector<std::string> allowed_tags) : allowed_tags(allowed_tags) {}
 
     void strip(PbnFile &file);
-
 };

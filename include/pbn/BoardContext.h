@@ -6,8 +6,8 @@
 
 #include "tokens/Tag.h"
 
-using tokens::Tag;
 using tokens::SemanticPbnToken;
+using tokens::Tag;
 
 using BoardNumber = size_t;
 using BoardContextId = size_t;
@@ -29,7 +29,8 @@ private:
     void unapplyTag(std::shared_ptr<Tag> token);
 
 public:
-    BoardContext(BoardNumber boardNumber, PbnFile &pbnFile) : boardNumber(boardNumber), pbnFile(pbnFile) {
+    BoardContext(BoardNumber boardNumber, PbnFile &pbnFile) : boardNumber(boardNumber), pbnFile(pbnFile)
+    {
         initId();
     }
     explicit BoardContext(PbnFile &pbnFile) : BoardContext(0, pbnFile) {}
@@ -52,4 +53,3 @@ public:
 
     [[nodiscard]] context_tokens getTokens() const;
 };
-

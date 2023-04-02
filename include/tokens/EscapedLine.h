@@ -6,7 +6,8 @@
 #include <regex>
 #include <string>
 
-namespace tokens {
+namespace tokens
+{
 
     constexpr char escapeCharacter = '%';
     /**
@@ -15,7 +16,8 @@ namespace tokens {
     constexpr std::string_view versionLinePrefix = "% PBN";
     constexpr std::string_view exportLine = "% EXPORT";
 
-    class EscapedLine : public SemanticPbnToken {
+    class EscapedLine : public SemanticPbnToken
+    {
     public:
         static std::shared_ptr<EscapedLine> create(const std::string &contents);
 
@@ -25,6 +27,5 @@ namespace tokens {
         [[nodiscard]] virtual bool isExport() const = 0;
         [[nodiscard]] virtual bool isVersion() const = 0;
     };
-
 
 } // tokens
