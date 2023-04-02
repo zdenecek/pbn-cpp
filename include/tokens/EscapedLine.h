@@ -22,8 +22,8 @@ namespace tokens
         static std::shared_ptr<EscapedLine> create(const std::string &contents);
 
         bool isEscapedLine() const override;
-
         bool isDirective() const;
+        
         [[nodiscard]] virtual bool isExport() const = 0;
         [[nodiscard]] virtual bool isVersion() const = 0;
     };

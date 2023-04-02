@@ -7,6 +7,7 @@
 #include <stdexcept>
 #include <string>
 #include <vector>
+#include <optional>
 #include <iostream>
 #include <memory>
 #include <cassert>
@@ -89,26 +90,29 @@ void PbnFile::replaceToken(size_t at, std::shared_ptr<SemanticPbnToken> with)
 {
     assert(at < this->tokens.size() && "Replace token: Index out of range");
 
-    auto old = this->tokens[at];
-    this->replaceToken(old, with);
+    auto& from = this->tokens[at];
+    auto id = this->findRange(from);
+    if (id.has_value())
+    {
+        if (from->isTag())
+        {
+            auto tag = std::dynamic_pointer_cast<Tag>(from);
+            this->boardContexts[id.value()].unapplyTag(tag);
+        }
+        if (with->isTag())
+        {
+            auto tag = std::dynamic_pointer_cast<Tag>(with);
+            this->boardContexts[id.value()].applyTag(tag);
+        }
+    }
+    std::swap(from, with);
 }
 
 void PbnFile::replaceToken(std::shared_ptr<SemanticPbnToken> from, std::shared_ptr<SemanticPbnToken> to)
 {
-    assert(std::find(this->tokens.begin(), this->tokens.end(), from) != this->tokens.end() && "Replace token: Token not found in token vector");
-    if (from->isTag())
-    {
-        auto tag = std::dynamic_pointer_cast<Tag>(from);
-        auto id = this->findRange(from);
-        this->boardContexts[id].unapplyTag(tag);
-    }
-    if (to->isTag())
-    {
-        auto tag = std::dynamic_pointer_cast<Tag>(to);
-        auto id = this->findRange(to);
-        this->boardContexts[id].applyTag(tag);
-    }
-    from.swap(to);
+    auto it = std::find(this->tokens.begin(), this->tokens.end(), from);
+    assert( it >= this->tokens.begin() && it < this->tokens.end() && "Replace token: Token not found in token vector");
+    this->replaceToken(it - this->tokens.begin(), to);
 }
 
 void PbnFile::deleteToken(size_t at)
@@ -154,17 +158,17 @@ void PbnFile::deleteToken(const std::vector<std::shared_ptr<SemanticPbnToken>>::
     // TODO validate state
 }
 
-BoardContextId PbnFile::findRange(size_t token_index) const
+std::optional<BoardContextId> PbnFile::findRange(size_t token_index) const
 {
     for (auto &[id, range] : this->BoardContextIdToTokenIndex)
     {
         if (range.StartIndex <= token_index && range.StartIndex + range.TokenCount > token_index)
-            return id;
+            return {id};
     }
-    throw std::out_of_range("Token index is not part of any range");
+    return {};
 }
 
-BoardContextId PbnFile::findRange(std::shared_ptr<SemanticPbnToken> token) const
+std::optional<BoardContextId> PbnFile::findRange(std::shared_ptr<SemanticPbnToken> token) const
 {
     auto it = std::find(this->tokens.begin(), this->tokens.end(), token);
     assert(it != this->tokens.end() && "Token not found in token vector");

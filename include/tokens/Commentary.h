@@ -9,8 +9,8 @@ namespace tokens
 
     enum class CommentaryFormat
     {
-        Semicolon,
-        Brace,
+        Singleline,
+        Multiline,
     };
 
     class Commentary : public SemanticPbnToken
@@ -19,6 +19,7 @@ namespace tokens
         static constexpr std::string_view typeName = "Commentary";
         std::string getTypeName() const override;
         Commentary(CommentaryFormat format, bool startsOnNewLine, const std::string &content);
+        Commentary(const std::string &content);
         void serialize(std::ostream &to) const override;
         bool isCommentary() const override;
 

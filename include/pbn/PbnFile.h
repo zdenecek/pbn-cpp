@@ -6,6 +6,7 @@
 #include <map>
 #include <ostream>
 #include <tuple>
+#include <optional>
 
 #include "tokens/SemanticPbnToken.h"
 #include "BoardContext.h"
@@ -35,8 +36,8 @@ private:
     std::map<BoardContextId, TokenRange>
         BoardContextIdToTokenIndex;
 
-    BoardContextId findRange(size_t token_index) const;
-    BoardContextId findRange(std::shared_ptr<SemanticPbnToken> token) const;
+    std::optional<BoardContextId> findRange(size_t token_index) const;
+    std::optional<BoardContextId> findRange(std::shared_ptr<SemanticPbnToken> token) const;
 
 public:
     PbnFile() : tokens(), boardContexts(), BoardContextIdToTokenIndex() {}

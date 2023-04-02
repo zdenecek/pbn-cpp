@@ -8,66 +8,66 @@
 
 #include <memory>
 #include <iostream>
+#include <optional>
 
 /**
  * This Parser is probably to be replaced with a generated one, something like boost::spirit or Flex-Bison
  */
 
-using namespace std;
 using namespace tokens;
 
-constexpr string_view whiteSpaceCharacters = " \t\n\v\f\r";
+constexpr std::string_view whiteSpaceCharacters = " \t\n\v\f\r";
 constexpr char stringDelimiter = '\"';
 
-void PbnParser::parseToken(PbnFile &file, string &line, istream &inputStream, bool startedOnNewLine)
+std::shared_ptr<SemanticPbnToken> PbnParser::parseToken(std::string &line, std::istream &inputStream, bool startedOnNewLine)
 {
 
     auto firstNonWsCharPosition = line.find_first_not_of(whiteSpaceCharacters);
 
     // Empty line
-    if (firstNonWsCharPosition == string::npos)
+    if (firstNonWsCharPosition == std::string::npos)
     {
-        file.appendToken(make_shared<tokens::EmptyLine>());
         line = "";
-        return;
+        return std::make_shared<tokens::EmptyLine>();
     }
     // Escaped line
-    else if (line[0] == tokens::escapeCharacter)
+    if (line[0] == tokens::escapeCharacter)
     {
-        file.appendToken(tokens::EscapedLine::create(line));
+        auto token = tokens::EscapedLine::create(line);
         line = "";
-        return;
+        return token;
     }
     char firstValidCharacter = line[firstNonWsCharPosition];
     if (firstValidCharacter == '[')
     {
-
-        parseTag(file, line, inputStream, startedOnNewLine);
+        auto tag = parseTag(line, inputStream, startedOnNewLine);
         line = line;
+        return tag;
     }
     else if (firstValidCharacter == ';')
     {
-        file.appendToken(make_shared<Commentary>(CommentaryFormat::Semicolon,
-                                                 true,
-                                                 line.substr(firstValidCharacter)));
+        auto token = std::make_shared<Commentary>(CommentaryFormat::Singleline,
+                                                  true,
+                                                  line.substr(firstNonWsCharPosition));
         line = "";
+        return token;
     }
     else if (firstValidCharacter == '{')
     {
-        auto remainder = parseMultilineComment(file, line, inputStream, startedOnNewLine);
-        line = remainder;
+        return parseMultilineComment(line, inputStream, startedOnNewLine);
     }
     else
     {
-        file.appendToken(make_shared<TextLine>(line));
+        auto token = std::make_shared<TextLine>(line);
         line = "";
+        return token;
     }
 }
 
-vector<string> PbnParser::getTableValues(string &line, istream &inputStream)
+std::vector<std::string> PbnParser::getTableValues(std::string &line, std::istream &inputStream)
 {
 
-    vector<string> values;
+    std::vector<std::string> values;
     if (line.empty() && !getline(inputStream, line))
     {
         return values;
@@ -83,79 +83,80 @@ vector<string> PbnParser::getTableValues(string &line, istream &inputStream)
     return values;
 }
 
-void PbnParser::parseTag(PbnFile &file, string &line, istream &inputStream, bool /* startedOnNewLine */)
+std::shared_ptr<tokens::Tag> PbnParser::parseTag(std::string &line, std::istream &inputStream, bool /* startedOnNewLine */)
 {
 
     // simplified, not all import version are supported, most of them are not used
-    regex regex1(R";((\s*\[\s*(\w+)\s*"(.*)"\s*\]\s*));");
-    smatch matches;
+    std::regex regex1(R";((\s*\[\s*(\w+)\s*"(.*)"\s*\]\s*));");
+    std::smatch matches;
 
     if (!std::regex_search(line, matches, regex1))
     {
-        throw runtime_error("Invalid tag: " + line);
+        throw std::runtime_error("Invalid tag: " + line);
     }
 
-    string tagString = matches[1];
-    string tagName = matches[2];
-    string tagContent = matches[3];
+    std::string tagString = matches[1];
+    std::string tagName = matches[2];
+    std::string tagContent = matches[3];
 
     line.erase(0, tagString.length());
-    auto tag = file.tokens.back();
+
+    std::shared_ptr<tokens::Tag> tag;
 
     if (tagFactory.isTableTag(tagName))
     {
-        vector<string> tableValues = getTableValues(line, inputStream);
-        file.appendToken(tagFactory.createTableTag(tagName, tagContent, move(tableValues)));
+        std::vector<std::string> tableValues = getTableValues(line, inputStream);
+        tag = tagFactory.createTableTag(tagName, tagContent, std::move(tableValues));
     }
     else
     {
-        file.appendToken(tagFactory.createTag(tagName, tagContent));
+        tag = tagFactory.createTag(tagName, tagContent);
     }
 
-    if (line.find_first_not_of(whiteSpaceCharacters) == string::npos)
+    if (line.find_first_not_of(whiteSpaceCharacters) == std::string::npos)
         line = "";
+
+    return tag;
 }
 
-string PbnParser::parseMultilineComment(PbnFile &file, string &line, istream &inputStream, bool startedOnNewLine)
+std::shared_ptr<Commentary> PbnParser::parseMultilineComment(std::string &line, std::istream &inputStream, bool startedOnNewLine)
 {
     auto start = line.find('{');
-    string line2 = line.substr(start);
-    string content;
-    while (line2.find('}') == string::npos)
+    line = line.substr(start);
+    std::string content;
+    while (line.find('}') == std::string::npos)
     {
-        content += line2 + "\n";
-        if (!getline(inputStream, line2))
-            throw runtime_error("Unclosed commentary bracket");
+        content += line + "\n";
+        if (!getline(inputStream, line))
+            throw std::runtime_error("Unclosed commentary bracket");
     }
-    auto end = line2.find("}");
-    content += line2.substr(0, end);
+    auto end = line.find("}");
+    content += line.substr(0, end);
 
-    line2.erase(0, end);
+    line.erase(0, end);
 
-    file.appendToken(make_shared<Commentary>(CommentaryFormat::Brace, startedOnNewLine, content));
+    auto token = make_shared<Commentary>(CommentaryFormat::Multiline, startedOnNewLine, content);
 
-    if (line2.find_first_not_of(whiteSpaceCharacters) != string::npos)
-    {
-        return line2;
-    }
+    if (line.find_first_not_of(whiteSpaceCharacters) == std::string::npos)
+        line = "";
 
-    return "";
+    return token;
 }
 
-PbnFile PbnParser::parse(istream &inputStream)
+PbnFile PbnParser::parse(std::istream &inputStream)
 {
     PbnFile file;
 
     // A line based parser manually written parser is employed as most of the time it will suffice
     // An idea to add in the future is a more robust parser, for example a flex powered one
 
-    string line;
+    std::string line;
     while (std::getline(inputStream, line))
     {
-        this->parseToken(file, line, inputStream, false);
+        file.appendToken(this->parseToken(line, inputStream, false));
         while (!line.empty())
         {
-            this->parseToken(file, line, inputStream, false);
+            file.appendToken(this->parseToken(line, inputStream, false));
         }
     }
 

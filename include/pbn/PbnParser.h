@@ -1,12 +1,14 @@
 #pragma once
 
 #include <istream>
+#include <optional>
 
 #include "PbnFile.h"
 #include "Tag.h"
 #include "TagFactory.h"
+#include "SemanticPbnToken.h"
+#include "Commentary.h"
 
-using tokens::TagFactory;
 
 class PbnParser
 {
@@ -38,15 +40,15 @@ public:
     }
 
     PbnFile parse(std::istream &inputStream);
+    std::shared_ptr<tokens::SemanticPbnToken> parseToken(std::string &line, std::istream &inputStream, bool startedOnNewLine);
 
 private:
     RecoveryMode mode;
 
-    TagFactory tagFactory;
+    tokens::TagFactory tagFactory;
 
-    void parseToken(PbnFile &file, std::string &line, std::istream &inputStream, bool startedOnNewLine);
-    std::string parseMultilineComment(PbnFile &file, std::string &line, std::istream &inputStream, bool startedOnNewLine);
+    std::shared_ptr<tokens::Commentary> parseMultilineComment(std::string &line, std::istream &inputStream, bool startedOnNewLine);
 
-    void parseTag(PbnFile &file, std::string &line, std::istream &inputStream, bool startedOnNewLine);
+    std::shared_ptr<tokens::Tag> parseTag(std::string &line, std::istream &inputStream, bool startedOnNewLine);
     std::vector<std::string> getTableValues(std::string &line, std::istream &inputStream);
 };

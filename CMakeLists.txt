@@ -5,6 +5,7 @@ set(CMAKE_CXX_STANDARD 20)
 
 file(GLOB SOURCES src/**/*.cpp include/**/*.cpp)
 file(GLOB HEADERS include/**/*.h)
+file(GLOB TESTS test/**/*.h)
 
 include_directories(include include/pbn include/tokens include/utils include/program include/manipulators include/debug)
 
@@ -21,7 +22,7 @@ link_libraries(${Boost_LIBRARIES})
 # END Boost
 
 add_executable(pbn main.cpp ${SOURCES} )
-add_executable(test test/basic.cpp ${SOURCES} )
+add_executable(test test/basic.cpp ${SOURCES} ${TESTS})
 
 set_target_properties(test PROPERTIES OUTPUT_NAME pbn_test)
 

@@ -28,6 +28,7 @@ PBN utilizes some libraries:
 
 ## User docs
 
+User documentation can be found in [guide.md](guide.md)
 
 ## Building
 
@@ -59,6 +60,22 @@ To build, run
 
 ```bash
 cmake --build .
+```
+
+## Tests
+
+To run tests, build the project. A second target of pbn_test should be built.
+
+To run tests, simply execute it:
+
+```bash
+./run_tests
+```
+
+Additionally, more options can be provided, run with help flag to see.
+
+```bash
+./run_test --help
 ```
 
 
