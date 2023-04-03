@@ -26,9 +26,13 @@ PBN utilizes some libraries:
   - check used features against declared version
 - pbn generation using external tools (e.g. Bigdeal)
 
-## User docs
+## User manual
 
-User documentation can be found in [guide.md](guide.md)
+User manual can be found in [guide.md](guide.md).
+
+Alternatively, it can be found in the generated documentation under **guide**.
+
+Use `--help` flag, or `-h` to see some of the options.
 
 ## Building
 
@@ -36,7 +40,11 @@ PBN is written in C++20 and uses CMake as build system.
 
 ### Step 0: Dependencies
 
-To build PBN, you need to configure CMake to be able to find boost.
+To build PBN, you need to configure CMake to be able to find Boost.
+
+To install Boost, see [Boost downloads section](https://www.boost.org/users/download/).
+
+Alternatively, use a package manager or Visual Studio NuGet or a compiler with Boost pre-packaged.
 
 ### Step 1: Configure
 
