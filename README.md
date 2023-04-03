@@ -15,10 +15,10 @@ PBN utilizes some libraries:
 - parse a file and validate it 
 - printing overview information about a file
 - stripping a file of unnecessary parts
-- creating board analyses in a file
 
 ## Features plan
 
+- creating board analyses in a file
 - exports to pdf, html
 - stricter adherence to PBN standard (currently it is not fully compliant)
   - validate
