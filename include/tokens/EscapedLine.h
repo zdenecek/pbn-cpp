@@ -16,13 +16,14 @@ namespace tokens
     constexpr std::string_view versionLinePrefix = "% PBN";
     constexpr std::string_view exportLine = "% EXPORT";
 
+    /// @brief Represent an escaped line, which is a line in the format "% <contents>". Includes directives - export and version
     class EscapedLine : public SemanticPbnToken
     {
     public:
         static std::shared_ptr<EscapedLine> create(const std::string &contents);
 
         bool isEscapedLine() const override;
-        
+
         /// @brief Returns true if the token is a version directive token or an export directive token.
         bool isDirective() const;
         /// @brief Returns true if the token is an export directive token ("% EXPORT")

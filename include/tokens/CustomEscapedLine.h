@@ -6,6 +6,7 @@
 
 namespace tokens
 {
+    /// @brief Represents an escaped line which neither an export directive or a version directive
     class CustomEscapedLine : public EscapedLine
     {
 

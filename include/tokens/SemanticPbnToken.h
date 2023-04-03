@@ -5,6 +5,8 @@
 
 namespace tokens
 {
+    /// @brief Represents a token of a PbnFile.
+    /// @details This is the base class for all tokens. It is used to represent a token of a PbnFile.
     class SemanticPbnToken
     {
     public:

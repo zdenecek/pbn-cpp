@@ -8,7 +8,7 @@
 namespace tokens
 {
 
-    // This class represents a tag in the Semantic PBN format.
+    /// @brief This class represents a tag in the Semantic PBN format.
     class Tag : public SemanticPbnToken
     {
     protected:

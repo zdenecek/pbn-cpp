@@ -59,7 +59,7 @@ cmake CMakeLists.txt -G "MinGW Makefiles"
 To build, run
 
 ```bash
-cmake --build .
+cmake --build <build dir>
 ```
 
 ## Documentation
@@ -71,6 +71,8 @@ To build the documentation, use the provided Doxyfile or create or own and run
 ```bash
 doxygen Doxyfile
 ```
+
+Documentation will be generated in the `docs` directory.
 
 ## Testing
 
@@ -86,6 +88,8 @@ Additionally, more options can be provided, run with help flag to see.
 ./run_test --help
 ```
 
+See [Boost.Test docs](https://www.boost.org/doc/libs/1_80_0/libs/test/doc/html/index.html) for more info.
+
 ## Authors
 
-[Zdeněk Tomis](zdenektomis.eu)
+[Zdeněk Tomis](https://zdenektomis.eu)

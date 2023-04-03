@@ -9,7 +9,7 @@
 #include "SemanticPbnToken.h"
 #include "Commentary.h"
 
-
+/// @brief Class used to parse a pbn file from an input stream.
 class PbnParser
 {
 

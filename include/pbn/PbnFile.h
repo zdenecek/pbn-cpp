@@ -13,6 +13,8 @@
 
 using tokens::SemanticPbnToken;
 
+
+/// @brief Represents a .pbn file
 class PbnFile
 {
     friend class PbnParser;

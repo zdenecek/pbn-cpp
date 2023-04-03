@@ -6,9 +6,10 @@
 #include <string>
 #include <ostream>
 
+
 namespace tokens
 {
-
+    /// @brief Represents a text line as an unrecognized token. Not permitted by the specification. Internal use.
     class TextLine : public SemanticPbnToken
     {
     protected:
