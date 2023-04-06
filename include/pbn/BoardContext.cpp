@@ -1,21 +1,45 @@
 #include "BoardContext.h"
+#include "BoardTag.h"
 #include "Tags.h"
 #include "PbnFile.h"
 
 #include <stdexcept>
 #include <cassert>
+#include <iostream>
 
-static BoardContextId id = 0;
-static BoardContextId getNewId()
+using namespace tokens;
+using namespace tokens::tags;
+
+
+ std::span<std::shared_ptr<SemanticPbnToken>> BoardContext::tokens() const
 {
-    return id++;
+    auto& range = this->pbnFile.BoardContextIdToTokenIndex.at(this->id) ;
+    return std::span{ this->pbnFile.tokens.begin() + range.StartIndex, range.TokenCount };
 }
+
+bool BoardContext::acceptsToken(size_t atIndex, std::shared_ptr<SemanticPbnToken> token) const {
+    
+    if( !token->isTag()) return true;
+
+    auto tag = std::dynamic_pointer_cast<Tag>(token);
+    if( isTagRecognized(tag->getTagname()) && doesTagHaveToBelongToBoardContext(tag->getTagname()) ) {
+        return !std::any_of(this->tokens().begin(), this->tokens().end(), [tag](auto &token) {
+            if( !token->isTag() ) return false;
+            auto tokenTag = std::dynamic_pointer_cast<Tag>(token);
+            return tokenTag->getTagname() == tag->getTagname();
+        });
+    }
+
+    return true;
+}
+
 
 void BoardContext::applyTag(std::shared_ptr<Tag> token)
 {
-    if (token->getTagname() == tokens::tags::BOARD && this->boardNumber != 0)
+    if (token->getTagname() == tokens::tags::BOARD )
     {
-        throw std::runtime_error("Internal error: Board number cannot be changed.");
+        assert( this->boardNumber == 0 && "Internal error: Board number is already set." );        
+        this->boardNumber = std::dynamic_pointer_cast<BoardTag>(token)->getBoardNumber();
     }
 }
 
@@ -28,30 +52,7 @@ void BoardContext::unapplyTag(std::shared_ptr<Tag> token)
         this->boardNumber = 0;
     }
 }
-
-void BoardContext::initId()
-{
-    this->id = getNewId();
-}
-
 BoardNumber BoardContext::getBoardNumber() const
 {
     return this->boardNumber;
-}
-
-BoardContext::context_tokens BoardContext::getTokens() const
-{
-    return context_tokens(*this);
-}
-
-std::vector<std::shared_ptr<SemanticPbnToken>>::const_iterator BoardContext::context_tokens::begin()
-{
-    auto &range = this->context.pbnFile.BoardContextIdToTokenIndex[this->context.id];
-    return this->context.pbnFile.getTokens().begin() + range.StartIndex;
-}
-
-std::vector<std::shared_ptr<SemanticPbnToken>>::const_iterator BoardContext::context_tokens::end()
-{
-    auto &range = this->context.pbnFile.BoardContextIdToTokenIndex[this->context.id];
-    return this->begin() + range.TokenCount;
 }

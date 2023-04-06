@@ -7,6 +7,11 @@
 #include "Tag.h"
 #include "TableTag.h"
 
+#include "Tags.h"
+#include "BoardTag.h"
+
+using namespace tokens::tags;
+
 namespace tokens
 {
 
@@ -32,6 +37,9 @@ namespace tokens
 
     std::shared_ptr<Tag> TagFactory::createTag(std::string tagName, std::string tagContent)
     {
+        if(tagName == BOARD) {
+            return std::make_shared<BoardTag>(tagContent);
+        }
         return std::make_shared<Tag>(tagName, tagContent);
     }
 

@@ -3,14 +3,34 @@
 #include <string>
 #include <memory>
 #include <vector>
+#include <ranges>
+#include <span>
 
 #include "tokens/Tag.h"
+#include "BoardNumber.h"
+#include "SemanticPbnToken.h"
+
+
+/* Identification section is defined as follows:
+ (1) Event      (the name of the tournament or match)
+ (2) Site       (the location of the event)
+ (3) Date       (the starting date of the game)
+ (4) Board      (the board number)
+ (5) West       (the west player)
+ (6) North      (the north player)
+ (7) East       (the east player)
+ (8) South      (the south player)
+ (9) Dealer     (the dealer)
+(10) Vulnerable (the situation of vulnerability)
+(11) Deal       (the dealt cards)
+(12) Scoring    (the scoring method)
+(13) Declarer   (the declarer of the contract)
+(14) Contract   (the contract)
+(15) Result     (the result of the game)
+*/
 
 using tokens::SemanticPbnToken;
 using tokens::Tag;
-
-/// @brief Represent board number in the game of bridge
-using BoardNumber = size_t;
 
 /// @brief Represent type of internal type id. Id is used to identify a board context at runtime and is never persisted.
 using BoardContextId = size_t;
@@ -25,40 +45,27 @@ class BoardContext
 
 private:
     BoardContextId id;
-    BoardNumber boardNumber;
+    BoardNumber boardNumber = 0;
     PbnFile &pbnFile;
-    void initId();
 
     /// @brief Apply the given token to this context. Used to validate file state.
     void applyTag(std::shared_ptr<Tag> token);
     /// @brief Remove tag from this context. Used to validate file state.
     void unapplyTag(std::shared_ptr<Tag> token);
+    
+    bool acceptsToken(size_t atIndex, std::shared_ptr<SemanticPbnToken> token) const;
 
 public:
-    BoardContext(BoardNumber boardNumber, PbnFile &pbnFile) : boardNumber(boardNumber), pbnFile(pbnFile)
-    {
-        initId();
-    }
-    explicit BoardContext(PbnFile &pbnFile) : BoardContext(0, pbnFile) {}
-
+    
+    BoardContext(BoardContextId id, PbnFile &pbnFile) : id(id), pbnFile(pbnFile) {}
+    
     /// @brief Returns the board number of this context.
     [[nodiscard]] BoardNumber getBoardNumber() const;
 
-    /// @brief A context_tokens object is used to iterate over all tokens in a context.
-    struct context_tokens
-    {
-        friend class BoardContext;
-        friend class PbnFile;
-
-    private:
-        const BoardContext &context;
-        explicit context_tokens(const BoardContext &context) : context(context) {}
-
-    public:
-        std::vector<std::shared_ptr<SemanticPbnToken>>::const_iterator begin();
-        std::vector<std::shared_ptr<SemanticPbnToken>>::const_iterator end();
-    };
-
-    /// @brief Returns a context_tokens object that can be used to iterate over all tokens in this context.
-    [[nodiscard]] context_tokens getTokens() const;
+    /**
+     * @brief Returns the tokens that are part of this context.
+     * Invalidates when a token is added or removed from this context.
+     * @return A span of tokens.
+     */
+    [[nodiscard]] std::span<std::shared_ptr<tokens::SemanticPbnToken>> tokens() const;
 };

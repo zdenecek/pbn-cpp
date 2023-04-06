@@ -59,6 +59,10 @@ public:
 private:
     RecoveryMode mode;
 
+    size_t curr_line = 0;
+    
+    std::istream & getline(std::istream &inputStream, std::string &line);
+
     tokens::TagFactory tagFactory;
 
     std::shared_ptr<tokens::Commentary> parseMultilineComment(std::string &line, std::istream &inputStream, bool startedOnNewLine);

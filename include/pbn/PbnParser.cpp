@@ -19,6 +19,16 @@ using namespace tokens;
 constexpr std::string_view whiteSpaceCharacters = " \t\n\v\f\r";
 constexpr char stringDelimiter = '\"';
 
+inline std::runtime_error make_error(std::string_view msg, std::string_view line, size_t line_number)
+{
+    return std::runtime_error(std::string(msg) + " at line " + std::to_string(line_number) + ":" + std::string(line));
+}
+
+inline std::runtime_error make_error(std::string_view msg, size_t line_number)
+{
+    return std::runtime_error(std::string(msg) + " at line " + std::to_string(line_number));
+}
+
 std::shared_ptr<SemanticPbnToken> PbnParser::parseToken(std::string &line, std::istream &inputStream, bool startedOnNewLine)
 {
 
@@ -92,7 +102,7 @@ std::shared_ptr<tokens::Tag> PbnParser::parseTag(std::string &line, std::istream
 
     if (!std::regex_search(line, matches, regex1))
     {
-        throw std::runtime_error("Invalid tag: " + line);
+        throw std::runtime_error("At line "+ std::to_string(this->curr_line) + ": Invalid tag: " + line);
     }
 
     std::string tagString = matches[1];
@@ -119,16 +129,25 @@ std::shared_ptr<tokens::Tag> PbnParser::parseTag(std::string &line, std::istream
     return tag;
 }
 
+std::istream & PbnParser::getline(std::istream &inputStream, std::string &line)
+{
+    this->curr_line++;
+    return std::getline(inputStream, line);
+}
+
 std::shared_ptr<Commentary> PbnParser::parseMultilineComment(std::string &line, std::istream &inputStream, bool startedOnNewLine)
 {
     auto start = line.find('{');
+
+    auto lineno = this->curr_line;
+    
     line = line.substr(start);
     std::string content;
     while (line.find('}') == std::string::npos)
     {
         content += line + "\n";
         if (!getline(inputStream, line))
-            throw std::runtime_error("Unclosed commentary bracket");
+            throw make_error("Multiline comment not closed", lineno);
     }
     auto end = line.find("}");
     content += line.substr(0, end);
@@ -151,7 +170,7 @@ PbnFile PbnParser::parse(std::istream &inputStream)
     // An idea to add in the future is a more robust parser, for example a flex powered one
 
     std::string line;
-    while (std::getline(inputStream, line))
+    while (getline(inputStream, line))
     {
         file.appendToken(this->parseToken(line, inputStream, false));
         while (!line.empty())

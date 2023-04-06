@@ -7,18 +7,20 @@
 #include <ostream>
 #include <tuple>
 #include <optional>
+#include <ranges>
 
 #include "tokens/SemanticPbnToken.h"
 #include "BoardContext.h"
+#include "PbnVersion.h"
 
 using tokens::SemanticPbnToken;
+
 
 
 /// @brief Represents a .pbn file
 class PbnFile
 {
-    friend class PbnParser;
-    friend class BoardContext::context_tokens;
+    friend class BoardContext;
     friend class Debug;
 
 private:
@@ -27,6 +29,13 @@ private:
 
     /// @brief All board contexts in the file.
     std::vector<BoardContext> boardContexts;
+
+    PbnVersion version = PbnVersion::NotSpecified;
+    bool isExport = false;
+    
+    BoardContextId nextBoardContextId = 0;
+
+    BoardContextId getNewBoardContextId();
 
     /// @brief Maps board context id to token ranges, tuples represent in order: start index, number of tokens
     struct TokenRange
@@ -46,6 +55,8 @@ private:
     /// @brief Returns the range of the token given.
     std::optional<BoardContextId> findRange(std::shared_ptr<SemanticPbnToken> token) const;
 
+    auto rangeTokens(BoardContextId id) const;
+
 public:
     PbnFile() : tokens(), boardContexts(), BoardContextIdToTokenIndex() {}
 
@@ -55,6 +66,9 @@ public:
      * @see BoardContext
      */
     [[nodiscard]] const std::vector<BoardContext> &getBoards() const;
+
+    /// @brief return true if the file is in EXPORT format and contains the export directive.
+    [[nodiscard]] bool isExportFormat() const;
 
     /// @brief Returns true if at least one board with the given number is present in the file.
     [[nodiscard]] bool hasBoardWithNumber(BoardNumber number) const;

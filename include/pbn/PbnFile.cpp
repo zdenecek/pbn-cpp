@@ -13,11 +13,19 @@
 #include <cassert>
 #include <algorithm>
 
+using namespace tokens::tags;
+
+
 bool PbnFile::hasBoardWithNumber(BoardNumber number) const
 {
 
     return std::any_of(this->boardContexts.begin(), this->boardContexts.end(), [number](const BoardContext &context)
                        { return context.getBoardNumber() == number; });
+}
+
+BoardContextId PbnFile::getNewBoardContextId()
+{
+    return this->nextBoardContextId++;
 }
 
 const BoardContext &PbnFile::getBoard(BoardNumber number) const
@@ -50,18 +58,35 @@ void PbnFile::appendToken(std::shared_ptr<SemanticPbnToken> token)
 
     auto tag = std::dynamic_pointer_cast<Tag>(token);
 
-    if (tag->getTagname() == tokens::tags::BOARD)
-    {
-        auto number = std::stoi(tag->getContent());
-        auto &board = this->boardContexts.emplace_back(number, *this);
-        this->BoardContextIdToTokenIndex[board.id] = {this->tokens.size() - 1, 1};
+    // We create new board context if 
+    // 1) There is no board context yet and the tag creates board context
+    // 2) The last board context cannot accept the board
+    bool createNew = false;
+
+
+    if(this->boardContexts.empty() && doesTagHaveToBelongToBoardContext(tag->getTagname()))
+        createNew = true;
+    else {
+        auto& bc = this->boardContexts.back();
+        if(!bc.acceptsToken(bc.tokens().size(), tag))
+            createNew = true;
     }
-    else if (this->boardContexts.size() > 0)
+
+    if (createNew)
     {
-        auto &bc = this->boardContexts.back();
+        auto &new_bc = this->boardContexts.emplace_back(this->getNewBoardContextId(), *this);
+        this->BoardContextIdToTokenIndex[new_bc.id] = {this->tokens.size() - 1, 1};
+        new_bc.applyTag(tag);
+    }
+    else
+    {
+        auto& bc = this->boardContexts.back();
+
         this->BoardContextIdToTokenIndex[bc.id].TokenCount++;
         bc.applyTag(tag);
     }
+
+
 }
 
 void PbnFile::insertToken(size_t at, std::shared_ptr<SemanticPbnToken> token)
