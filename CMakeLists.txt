@@ -4,6 +4,7 @@ project(pbn)
 set(CMAKE_CXX_STANDARD 20)
 
 
+
 file(GLOB_RECURSE SOURCES src/*.cpp )
 file(GLOB_RECURSE HEADERS include/*.h include/*.hpp)
 file(GLOB TESTS test/*.h)
@@ -14,7 +15,7 @@ include_directories(include include/pbn include/tokens include/tokens/tags inclu
 # Boost
 
 # Useful for debugging boost issues
-# set(Boost_DEBUG 1)
+# set(BOOST_DEBUG 1)
 # set(BOOST_ROOT "C:/boost")
 
 

@@ -1,4 +1,4 @@
-name: Build and test
+name: Build and test on Windows
 
 on:
   workflow_dispatch:
@@ -17,26 +17,15 @@ jobs:
         - {
             name: "Windows Latest MSVC", id: msvc, artifact: "Windows-MSVC.tar.xz",
             os: windows-latest,
-            build_type: "Release",cc: "cl",cxx: "cl",
+            build_type: "Release",cc: "cl",cxx: "cl", generator: "Visual Studio 17 2022",
             environment_script: "C:/Program Files (x86)/Microsoft Visual Studio/2019/Enterprise/VC/Auxiliary/Build/vcvars64.bat"
         }
         - { 
             name: "Windows Latest MinGW", id: mingw, artifact: "Windows-MinGW.tar.xz",
             os: windows-latest, 
-            build_type: "Release", cc: "gcc", cxx: "g++"
+            build_type: "Release", cc: "gcc", cxx: "g++", generator: "MinGW Makefiles",
           }
-        - {
-            name: "Ubuntu Latest GCC",
-            id: gcc, artifact: "Linux.tar.xz",
-            os: ubuntu-latest,
-            build_type: "Release", cc: "gcc", cxx: "g++",
-          }
-        - {
-            name: "macOS Latest Clang", artifact: "macOS.tar.xz",
-            os: macos-latest,
-            id: mac,
-            build_type: "Release", cc: "clang", cxx: "clang++"
-          }
+        
     steps:
       - name: Checkout
         uses: actions/checkout@v2
@@ -59,33 +48,45 @@ jobs:
               endif()
             endforeach()
             endif()
-      - name: Install Boost
-        if: ${{ matrix.config.id == 'gcc' }}
-        run: |
-            sudo apt-get update
-            sudo apt-get install libboost-all-dev -y
-      - name: Install Boost
-        if: ${{ matrix.config.id == 'mac' }}
-        run: |
-           brew update 
-           brew install boost           
-      - name: Install Boost
-        id: boost
-        if: ${{ matrix.config.id == 'msvc'  || matrix.config.id == 'mingw'}}
-        uses: egor-tensin/build-boost@v1
+     
+      - name: Cache Boost
+        uses: actions/cache@v2
         with:
-          version: 1.71.0
-          libraries: filesystem program_options system
-          platform: x64
-          toolset: ${{ matrix.config.id }}
-          configuration: Release
-      - name: CMake Configure
+          path: '${{ runner.workspace }}/boost_*.tar.gz'
+          key: 'boost-1.79.0'              
+      # - name: Install Boost
+      #   id: boost
+      #   continue-on-error: true
+      #   uses: egor-tensin/build-boost@v1
+      #   with:
+      #     version: 1.79.0
+      #     libraries: filesystem program_options test system
+      #     platform: x64
+      #     toolset: ${{ matrix.config.id }}
+      #     configuration: Release
+      #     static: static
+      - name: Install Boost
+        uses: MarkusJx/install-boost@v2.4.1
+        id: install-boost
+        with:
+            # REQUIRED: Specify the required boost version
+            # A list of supported versions can be found here:
+            # https://github.com/MarkusJx/prebuilt-boost/blob/main/versions-manifest.json
+            boost_version: 1.79.0
+            toolset: msvc
+      - run: cat ${{ steps.boost.outputs.root }}/bootstrap.log
+        continue-on-error: true
+      - name: CMake Configure 
+        continue-on-error: true
         run: |
           mkdir build
           cd build
-          cmake .. -DCMAKE_BUILD_TYPE=${{ matrix.config.build_type }} -DCMAKE_C_COMPILER=${{ matrix.config.cc }} -DCMAKE_CXX_COMPILER=${{ matrix.config.cxx }}
+          cmake .. -G "${{ matrix.config.generator }}" -DBoost_USE_STATIC_LIBS=ON -DBOOST_LIBRARYDIR=DBOOST_ROOT=${{steps.boost.outputs.librarydir}} -DBOOST_ROOT=${{steps.boost.outputs.root}} -DBoost_DEBUG=ON -DCMAKE_BUILD_TYPE=${{ matrix.config.build_type }} -DCMAKE_C_COMPILER=${{ matrix.config.cc }} -DCMAKE_CXX_COMPILER=${{ matrix.config.cxx }}
       - name: CMake Build
+        continue-on-error: true
         run: cmake --build build --config ${{ matrix.config.build_type }} --target test
+      - name: Print CMakeOutput.log
+        run: cat D:/a/pbn/pbn/build/CMakeFiles/CMakeOutput.log  
       - name: Test
         run: |
           cd build

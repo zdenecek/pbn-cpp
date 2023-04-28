@@ -1,4 +1,0 @@
-/mnt/c/Users/zdnek/src/pbn/build2/CMakeFiles/pbn.dir
-/mnt/c/Users/zdnek/src/pbn/build2/CMakeFiles/test.dir
-/mnt/c/Users/zdnek/src/pbn/build2/CMakeFiles/edit_cache.dir
-/mnt/c/Users/zdnek/src/pbn/build2/CMakeFiles/rebuild_cache.dir
