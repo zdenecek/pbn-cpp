@@ -1,5 +1,0 @@
-#!/bin/bash
-for f in $(ls **/*.h)
-do
-    mv $f ${f%%.h}".hpp"
-done

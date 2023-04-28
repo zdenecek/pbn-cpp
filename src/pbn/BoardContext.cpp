@@ -12,11 +12,11 @@ using namespace tokens;
 using namespace tokens::tags;
 
 
- std::span<std::unique_ptr<SemanticPbnToken>> BoardContext::tokens() const
+ auto BoardContext::tokens() const -> std::span<std::unique_ptr<SemanticPbnToken>>
 {
     auto& range = this->pbnFile.BoardContextIdToTokenIndex.at(this->id) ;
 
-    return std::span{ this->pbnFile.tokens.begin() + range.StartIndex, range.TokenCount };
+    return std::span<std::unique_ptr<SemanticPbnToken>>{ this->pbnFile.tokens.begin() + range.StartIndex, range.TokenCount };
 }
 
 bool BoardContext::acceptsToken(size_t atIndex, observer_ptr<SemanticPbnToken> token) const {
