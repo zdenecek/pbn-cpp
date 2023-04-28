@@ -1,5 +1,5 @@
-
 #pragma once
+
 
 /*
     This file contains a few helper functions for creating observer_ptr's.

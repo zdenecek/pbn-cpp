@@ -1,7 +1,9 @@
+#pragma once
 
 #include <vector>
 #include <string>
 #include <functional>
+
 
 /**
  * @brief Split a string into a vector of strings by spaces
