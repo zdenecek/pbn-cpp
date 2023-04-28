@@ -44,19 +44,29 @@ const std::vector<BoardContext> &PbnFile::getBoards() const
     return this->boardContexts;
 }
 
-const std::vector<std::shared_ptr<SemanticPbnToken>> &PbnFile::getTokens() const
+const std::vector<std::unique_ptr<SemanticPbnToken>> &PbnFile::getTokens() const
 {
     return this->tokens;
 }
 
-void PbnFile::appendToken(std::shared_ptr<SemanticPbnToken> token)
+const observer_ptr<SemanticPbnToken> PbnFile::operator[](size_t index) const
 {
-    this->tokens.push_back(token);
+    if(index >= this->tokens.size())
+        throw std::out_of_range("Index out of range");
 
-    if (!token->isTag())
+    return make_observer<SemanticPbnToken>(this->tokens[index]);
+}
+
+void PbnFile::appendToken(std::unique_ptr<SemanticPbnToken>&& token)
+{
+    this->tokens.push_back(std::move(token));
+
+    auto& _token = this->tokens.back();
+
+    if (!_token->isTag())
         return;
 
-    auto tag = std::dynamic_pointer_cast<Tag>(token);
+    auto tag = dynamic_cast<observer_ptr<Tag>>(_token.get());
 
     // We create new board context if 
     // 1) There is no board context yet and the tag creates board context
@@ -89,7 +99,7 @@ void PbnFile::appendToken(std::shared_ptr<SemanticPbnToken> token)
 
 }
 
-void PbnFile::insertToken(size_t at, std::shared_ptr<SemanticPbnToken> token)
+void PbnFile::insertToken(size_t at, std::unique_ptr<SemanticPbnToken>&& token)
 {
     assert(at < this->tokens.size() && "Insert token: Index out of range");
 
@@ -101,54 +111,60 @@ void PbnFile::insertToken(size_t at, std::shared_ptr<SemanticPbnToken> token)
         {
             range.TokenCount++;
             if (token->isTag())
-                this->boardContexts[id].applyTag(std::dynamic_pointer_cast<Tag>(token));
+                this->boardContexts[id].applyTag(dynamic_cast<observer_ptr<Tag>>(token.get()));
         }
     }
 
-    this->tokens.insert(this->tokens.begin() + at, token);
+    this->tokens.insert(this->tokens.begin() + at, std::move(token));
 
     // validate state
     // tokens are always appended to ranges, needs to change to check, whether we dont want to prepend
 }
 
-void PbnFile::replaceToken(size_t at, std::shared_ptr<SemanticPbnToken> with)
+void PbnFile::replaceToken(size_t at, std::unique_ptr<SemanticPbnToken>&& with)
 {
     assert(at < this->tokens.size() && "Replace token: Index out of range");
 
     auto& from = this->tokens[at];
-    auto id = this->findRange(from);
+    auto id = this->findRange(from.get());
     if (id.has_value())
     {
         if (from->isTag())
         {
-            auto tag = std::dynamic_pointer_cast<Tag>(from);
+            auto tag = dynamic_cast<observer_ptr<Tag>>(from.get());
             this->boardContexts[id.value()].unapplyTag(tag);
         }
         if (with->isTag())
         {
-            auto tag = std::dynamic_pointer_cast<Tag>(with);
+            auto tag = dynamic_cast<observer_ptr<Tag>>(with.get());
             this->boardContexts[id.value()].applyTag(tag);
         }
     }
     std::swap(from, with);
 }
 
-void PbnFile::replaceToken(std::shared_ptr<SemanticPbnToken> from, std::shared_ptr<SemanticPbnToken> to)
+void PbnFile::replaceToken(observer_ptr<SemanticPbnToken> from, std::unique_ptr<SemanticPbnToken>&& to)
 {
-    auto it = std::find(this->tokens.begin(), this->tokens.end(), from);
+    auto it = std::find_if(this->tokens.begin(), this->tokens.end(), [&](std::unique_ptr<SemanticPbnToken>& p)
+    {
+        return p.get() == from;
+    });
     assert( it >= this->tokens.begin() && it < this->tokens.end() && "Replace token: Token not found in token vector");
-    this->replaceToken(it - this->tokens.begin(), to);
+    this->replaceToken(it - this->tokens.begin(), std::move(to));
 }
 
-void PbnFile::deleteToken(size_t at)
+void PbnFile::deleteTokenAt(size_t at)
 {
     assert(at < this->tokens.size() && "Delete token: Index out of range");
     this->deleteToken(this->tokens.begin() + at);
 }
 
-void PbnFile::deleteToken(std::shared_ptr<SemanticPbnToken> token)
+void PbnFile::deleteToken(observer_ptr<SemanticPbnToken> token)
 {
-    auto it = std::find(this->tokens.begin(), this->tokens.end(), token);
+    auto it = std::find_if(this->tokens.begin(), this->tokens.end(), [&](std::unique_ptr<SemanticPbnToken>& p)
+    {
+        return p.get() == token;
+    });
     assert(it != this->tokens.end() && "Delete token: Token not found in token vector");
     this->deleteToken(it);
 }
@@ -162,7 +178,7 @@ void PbnFile::serialize(std::ostream &stream) const
     }
 }
 
-void PbnFile::deleteToken(const std::vector<std::shared_ptr<SemanticPbnToken>>::iterator &it)
+void PbnFile::deleteToken(const std::vector<std::unique_ptr<SemanticPbnToken>>::iterator &it)
 {
     assert(this->tokens.begin() <= it && it < this->tokens.end() && "Iterator is outside of token vector");
 
@@ -177,7 +193,7 @@ void PbnFile::deleteToken(const std::vector<std::shared_ptr<SemanticPbnToken>>::
         {
             range.TokenCount--;
             if ((*it)->isTag())
-                this->boardContexts[id].unapplyTag(std::dynamic_pointer_cast<Tag>(*it));
+                this->boardContexts[id].unapplyTag(dynamic_cast<observer_ptr<Tag>>((*it).get()));
         }
     }
     // TODO validate state
@@ -193,9 +209,12 @@ std::optional<BoardContextId> PbnFile::findRange(size_t token_index) const
     return {};
 }
 
-std::optional<BoardContextId> PbnFile::findRange(std::shared_ptr<SemanticPbnToken> token) const
+std::optional<BoardContextId> PbnFile::findRange(observer_ptr<SemanticPbnToken> token) const
 {
-    auto it = std::find(this->tokens.begin(), this->tokens.end(), token);
+    auto it = std::find_if(this->tokens.begin(), this->tokens.end(), [token](auto& p)
+    {
+        return p.get() == token;
+    });
     assert(it != this->tokens.end() && "Token not found in token vector");
     return this->findRange(it - this->tokens.begin());
 }

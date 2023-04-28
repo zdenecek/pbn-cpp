@@ -1,4 +1,5 @@
 #include "PbnInfoPrinter.h"
+#include "observer.h"
 #include "Tags.h"
 
 #include <algorithm>
@@ -30,12 +31,13 @@ namespace manipulators
 
     std::string PbnInfoPrinter::GetGeneratorInfo(const PbnFile &file)
     {
-        auto f = std::find_if(file.getTokens().begin(), file.getTokens().end(), [](const std::shared_ptr<tokens::SemanticPbnToken> &token)
-                              { return token->isTag() && std::static_pointer_cast<tokens::Tag>(token)->getTagname() == "Generator"; });
+        auto f = std::find_if(file.getTokens().begin(), file.getTokens().end(), [](const std::unique_ptr<tokens::SemanticPbnToken> &token)
+                              { return token->isTag() && dynamic_cast<observer_ptr<tokens::Tag>>(token.get())->getTagname() == "Generator"; });
+
 
         if (f == file.getTokens().end())
             return "";
 
-        return std::static_pointer_cast<tokens::Tag>(*f)->getContent();
+        return dynamic_cast<observer_ptr<tokens::Tag>>((*f).get())->getContent();
     }
 }

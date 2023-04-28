@@ -53,8 +53,8 @@ public:
     /// @param inputStream Input stream to get more lines from, if necessary.
     /// @param startedOnNewLine True if line is a line from the original file. False if line is a continuation of a previous line, a part of it being already parsed.
     /// @throw std::runtime_error if the parser encounters an error and the recovery mode is set to strict.
-    /// @return shared_ptr to the parsed token
-    std::shared_ptr<tokens::SemanticPbnToken> parseToken(std::string &line, std::istream &inputStream, bool startedOnNewLine);
+    /// @return unique_ptr to the parsed token
+    std::unique_ptr<tokens::SemanticPbnToken> parseToken(std::string &line, std::istream &inputStream, bool startedOnNewLine);
 
 private:
     RecoveryMode mode;
@@ -65,8 +65,8 @@ private:
 
     tokens::TagFactory tagFactory;
 
-    std::shared_ptr<tokens::Commentary> parseMultilineComment(std::string &line, std::istream &inputStream, bool startedOnNewLine);
+    std::unique_ptr<tokens::Commentary> parseMultilineComment(std::string &line, std::istream &inputStream, bool startedOnNewLine);
 
-    std::shared_ptr<tokens::Tag> parseTag(std::string &line, std::istream &inputStream, bool startedOnNewLine);
+    std::unique_ptr<tokens::Tag> parseTag(std::string &line, std::istream &inputStream, bool startedOnNewLine);
     std::vector<std::string> getTableValues(std::string &line, std::istream &inputStream);
 };

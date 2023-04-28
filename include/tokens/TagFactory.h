@@ -12,8 +12,8 @@ namespace tokens
     {
 
     public:
-        std::shared_ptr<Tag> createTag(std::string tagName, std::string tagContent);
-        std::shared_ptr<Tag> createTableTag(std::string tagName, std::string tagContent, std::vector<std::string> &&values);
+        std::unique_ptr<Tag> createTag(std::string tagName, std::string tagContent);
+        std::unique_ptr<Tag> createTableTag(std::string tagName, std::string tagContent, std::vector<std::string> &&values);
 
 
         /// @brief Check if provided tag name corresponds to a supplementary section tag.

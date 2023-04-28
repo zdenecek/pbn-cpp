@@ -20,7 +20,7 @@ namespace tokens
     class EscapedLine : public SemanticPbnToken
     {
     public:
-        static std::shared_ptr<EscapedLine> create(const std::string &contents);
+        static std::unique_ptr<EscapedLine> create(const std::string &contents);
 
         bool isEscapedLine() const override;
 

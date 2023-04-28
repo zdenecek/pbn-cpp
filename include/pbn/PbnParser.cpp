@@ -29,7 +29,7 @@ inline std::runtime_error make_error(std::string_view msg, size_t line_number)
     return std::runtime_error(std::string(msg) + " at line " + std::to_string(line_number));
 }
 
-std::shared_ptr<SemanticPbnToken> PbnParser::parseToken(std::string &line, std::istream &inputStream, bool startedOnNewLine)
+std::unique_ptr<SemanticPbnToken> PbnParser::parseToken(std::string &line, std::istream &inputStream, bool startedOnNewLine)
 {
 
     auto firstNonWsCharPosition = line.find_first_not_of(whiteSpaceCharacters);
@@ -38,7 +38,7 @@ std::shared_ptr<SemanticPbnToken> PbnParser::parseToken(std::string &line, std::
     if (firstNonWsCharPosition == std::string::npos)
     {
         line = "";
-        return std::make_shared<tokens::EmptyLine>();
+        return std::make_unique<tokens::EmptyLine>();
     }
     // Escaped line
     if (line[0] == tokens::escapeCharacter)
@@ -56,7 +56,7 @@ std::shared_ptr<SemanticPbnToken> PbnParser::parseToken(std::string &line, std::
     }
     else if (firstValidCharacter == ';')
     {
-        auto token = std::make_shared<Commentary>(CommentaryFormat::Singleline,
+        auto token = std::make_unique<Commentary>(CommentaryFormat::Singleline,
                                                   true,
                                                   line.substr(firstNonWsCharPosition));
         line = "";
@@ -68,7 +68,7 @@ std::shared_ptr<SemanticPbnToken> PbnParser::parseToken(std::string &line, std::
     }
     else
     {
-        auto token = std::make_shared<TextLine>(line);
+        auto token = std::make_unique<TextLine>(line);
         line = "";
         return token;
     }
@@ -93,7 +93,7 @@ std::vector<std::string> PbnParser::getTableValues(std::string &line, std::istre
     return values;
 }
 
-std::shared_ptr<tokens::Tag> PbnParser::parseTag(std::string &line, std::istream &inputStream, bool /* startedOnNewLine */)
+std::unique_ptr<tokens::Tag> PbnParser::parseTag(std::string &line, std::istream &inputStream, bool /* startedOnNewLine */)
 {
 
     // simplified, not all import version are supported, most of them are not used
@@ -111,7 +111,7 @@ std::shared_ptr<tokens::Tag> PbnParser::parseTag(std::string &line, std::istream
 
     line.erase(0, tagString.length());
 
-    std::shared_ptr<tokens::Tag> tag;
+    std::unique_ptr<tokens::Tag> tag;
 
     if (tagFactory.isTableTag(tagName))
     {
@@ -135,7 +135,7 @@ std::istream & PbnParser::getline(std::istream &inputStream, std::string &line)
     return std::getline(inputStream, line);
 }
 
-std::shared_ptr<Commentary> PbnParser::parseMultilineComment(std::string &line, std::istream &inputStream, bool startedOnNewLine)
+std::unique_ptr<Commentary> PbnParser::parseMultilineComment(std::string &line, std::istream &inputStream, bool startedOnNewLine)
 {
     auto start = line.find('{');
 
@@ -154,7 +154,7 @@ std::shared_ptr<Commentary> PbnParser::parseMultilineComment(std::string &line, 
 
     line.erase(0, end);
 
-    auto token = make_shared<Commentary>(CommentaryFormat::Multiline, startedOnNewLine, content);
+    auto token = make_unique<Commentary>(CommentaryFormat::Multiline, startedOnNewLine, content);
 
     if (line.find_first_not_of(whiteSpaceCharacters) == std::string::npos)
         line = "";

@@ -20,14 +20,14 @@ namespace tokens
             return std::regex_match(line, versionRegex);
     }
 
-    std::shared_ptr<EscapedLine> EscapedLine::create(const std::string &contents)
+    std::unique_ptr<EscapedLine> EscapedLine::create(const std::string &contents)
     {
         if (contents == exportLine)
-            return std::make_shared<ExportEscapedLine>();
+            return std::make_unique<ExportEscapedLine>();
         if (isVersionLine(contents))
-            return std::make_shared<VersionEscapedLine>(contents);
+            return std::make_unique<VersionEscapedLine>(contents);
 
-        return make_shared<CustomEscapedLine>(contents.substr(1));
+        return make_unique<CustomEscapedLine>(contents.substr(1));
     }
 
     bool EscapedLine::isEscapedLine() const

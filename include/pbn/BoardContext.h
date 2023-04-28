@@ -9,6 +9,7 @@
 #include "tokens/Tag.h"
 #include "BoardNumber.h"
 #include "SemanticPbnToken.h"
+#include "observer.h"
 
 
 /* Identification section is defined as follows:
@@ -49,11 +50,11 @@ private:
     PbnFile &pbnFile;
 
     /// @brief Apply the given token to this context. Used to validate file state.
-    void applyTag(std::shared_ptr<Tag> token);
+    void applyTag(observer_ptr<Tag> token);
     /// @brief Remove tag from this context. Used to validate file state.
-    void unapplyTag(std::shared_ptr<Tag> token);
+    void unapplyTag(observer_ptr<Tag> token);
     
-    bool acceptsToken(size_t atIndex, std::shared_ptr<SemanticPbnToken> token) const;
+    bool acceptsToken(size_t atIndex, observer_ptr<SemanticPbnToken> token) const;
 
 public:
     
@@ -67,5 +68,5 @@ public:
      * Invalidates when a token is added or removed from this context.
      * @return A span of tokens.
      */
-    [[nodiscard]] std::span<std::shared_ptr<tokens::SemanticPbnToken>> tokens() const;
+    [[nodiscard]] std::span<std::unique_ptr<tokens::SemanticPbnToken>> tokens() const;
 };
