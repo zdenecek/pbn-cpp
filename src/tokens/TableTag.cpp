@@ -4,8 +4,8 @@
 #include <algorithm>
 #include <iomanip>
 
-#include "TableTag.h"
-#include "strings.h"
+#include "TableTag.hpp"
+#include "strings.hpp"
 
 namespace tokens
 {
@@ -26,7 +26,7 @@ namespace tokens
         // Alignment
         if (str.find(ColumnInfo::ORDERING_INFO_SEPARATOR) != std::string::npos)
         {
-            auto parts = split(str, ColumnInfo::ORDERING_INFO_SEPARATOR);
+            auto parts = split_str(str, ColumnInfo::ORDERING_INFO_SEPARATOR);
             if (parts.size() != 2)
                 throw std::runtime_error("Invalid column format: " + info);
             col_info.name = parts[0];
@@ -114,7 +114,7 @@ namespace tokens
     {
         this->column_count = count(this->content.begin(), this->content.end(), ';') + 1;
 
-        auto infos = split(this->content, ';');
+        auto infos = split_str(this->content, ';');
 
         if (infos.empty())
         {

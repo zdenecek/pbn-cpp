@@ -1,8 +1,8 @@
-#include "BoardContext.h"
-#include "BoardTag.h"
-#include "Tags.h"
-#include "PbnFile.h"
-#include "observer.h"
+#include "BoardContext.hpp"
+#include "BoardTag.hpp"
+#include "Tags.hpp"
+#include "PbnFile.hpp"
+#include "observer.hpp"
 
 #include <stdexcept>
 #include <cassert>

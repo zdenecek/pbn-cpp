@@ -1,6 +1,6 @@
-#include "PbnStripper.h"
-#include "EscapedLine.h"
-#include "observer.h"
+#include "PbnStripper.hpp"
+#include "EscapedLine.hpp"
+#include "observer.hpp"
 
 #include <vector>
 #include <memory>

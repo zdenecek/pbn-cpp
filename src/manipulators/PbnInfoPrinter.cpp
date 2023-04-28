@@ -1,6 +1,6 @@
-#include "PbnInfoPrinter.h"
-#include "observer.h"
-#include "Tags.h"
+#include "PbnInfoPrinter.hpp"
+#include "observer.hpp"
+#include "Tags.hpp"
 
 #include <algorithm>
 

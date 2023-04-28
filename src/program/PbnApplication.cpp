@@ -5,15 +5,15 @@
 #include <string>
 #include <iomanip>
 
-#include "PbnApplication.h"
-#include "PbnParser.h"
-#include "PbnSerializer.h"
+#include "PbnApplication.hpp"
+#include "PbnParser.hpp"
+#include "PbnSerializer.hpp"
 
-#include "PbnInfoPrinter.h"
-#include "PbnBoardAnalyzer.h"
-#include "PbnStripper.h"
+#include "PbnInfoPrinter.hpp"
+#include "PbnBoardAnalyzer.hpp"
+#include "PbnStripper.hpp"
 
-#include "debug_utils.h"
+#include "debug_utils.hpp"
 
 #include <boost/program_options.hpp>
 

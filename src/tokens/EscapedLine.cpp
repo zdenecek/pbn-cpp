@@ -1,7 +1,7 @@
-#include "EscapedLine.h"
-#include "VersionEscapedLine.h"
-#include "ExportEscapedLine.h"
-#include "CustomEscapedLine.h"
+#include "EscapedLine.hpp"
+#include "VersionEscapedLine.hpp"
+#include "ExportEscapedLine.hpp"
+#include "CustomEscapedLine.hpp"
 
 #include <string>
 #include <regex>

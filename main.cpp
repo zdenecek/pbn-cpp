@@ -1,6 +1,6 @@
 
 #include "boost/program_options.hpp"
-#include "PbnApplication.h"
+#include "PbnApplication.hpp"
 
 #include <iostream>
 

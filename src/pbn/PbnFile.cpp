@@ -1,7 +1,7 @@
-#include "PbnFile.h"
-#include "Tag.h"
-#include "TableTag.h"
-#include "Tags.h"
+#include "PbnFile.hpp"
+#include "Tag.hpp"
+#include "TableTag.hpp"
+#include "Tags.hpp"
 
 #include <exception>
 #include <stdexcept>

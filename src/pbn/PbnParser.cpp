@@ -1,10 +1,10 @@
-#include "PbnParser.h"
-#include "tokens/EmptyLine.h"
-#include "tokens/EscapedLine.h"
-#include "tokens/TextLine.h"
-#include "Commentary.h"
-#include "Tag.h"
-#include "utils/strings.h"
+#include "PbnParser.hpp"
+#include "tokens/EmptyLine.hpp"
+#include "tokens/EscapedLine.hpp"
+#include "tokens/TextLine.hpp"
+#include "Commentary.hpp"
+#include "Tag.hpp"
+#include "utils/strings.hpp"
 
 #include <memory>
 #include <iostream>
@@ -85,7 +85,7 @@ std::vector<std::string> PbnParser::getTableValues(std::string &line, std::istre
     while (!(line.starts_with('[') || line.empty() || line.starts_with(';')))
     {
 
-        split(line, values);
+        split_str(line, values);
         if (!getline(inputStream, line))
             break;
     }

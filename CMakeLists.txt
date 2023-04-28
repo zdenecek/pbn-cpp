@@ -1,11 +1,11 @@
-cmake_minimum_required(VERSION 3.23)
+cmake_minimum_required(VERSION 3.22)
 project(pbn)
 
-set(CMAKE_CXX_STANDARD 23)
+set(CMAKE_CXX_STANDARD 20)
 
 
 file(GLOB_RECURSE SOURCES src/*.cpp )
-file(GLOB_RECURSE HEADERS include/*.h)
+file(GLOB_RECURSE HEADERS include/*.h include/*.hpp)
 file(GLOB TESTS test/*.h)
 
 include_directories(include include/pbn include/tokens include/tokens/tags include/utils include/program include/manipulators 

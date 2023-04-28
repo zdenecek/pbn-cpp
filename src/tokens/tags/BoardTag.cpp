@@ -1,5 +1,5 @@
-#include "BoardTag.h"
-#include "Tags.h"
+#include "BoardTag.hpp"
+#include "Tags.hpp"
 
 namespace tokens
 {

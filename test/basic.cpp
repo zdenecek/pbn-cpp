@@ -2,8 +2,8 @@
 // using static library
 #include <boost/test/unit_test.hpp>
 
-#include "PbnParser.h"
-#include "PbnParser.h"
+#include "PbnParser.hpp"
+#include "PbnParser.hpp"
 
 // Other test are included at the end of this file
 
@@ -21,5 +21,5 @@ BOOST_AUTO_TEST_CASE(checkParserCanBeInstantiated)
 
 BOOST_AUTO_TEST_SUITE_END()
 
-#include "parser.h"
-#include "file_token_manipulation.h"
+#include "parser.hpp"
+#include "file_token_manipulation.hpp"

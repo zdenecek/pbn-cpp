@@ -1,4 +1,4 @@
-#include "SemanticPbnToken.h"
+#include "SemanticPbnToken.hpp"
 
 #include <sstream>
 

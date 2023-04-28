@@ -3,12 +3,12 @@
 #include <string>
 #include <memory>
 
-#include "TagFactory.h"
-#include "Tag.h"
-#include "TableTag.h"
+#include "TagFactory.hpp"
+#include "Tag.hpp"
+#include "TableTag.hpp"
 
-#include "Tags.h"
-#include "BoardTag.h"
+#include "Tags.hpp"
+#include "BoardTag.hpp"
 
 using namespace tokens::tags;
 

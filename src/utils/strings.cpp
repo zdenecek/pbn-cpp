@@ -1,4 +1,4 @@
-#include "strings.h"
+#include "strings.hpp"
 
 #include <algorithm>
 #include <cctype>
@@ -8,7 +8,7 @@
 // split copied from source
 // updated with delimiter parametrization
 // https://stackoverflow.com/questions/8425214/splitting-string-into-a-vectorstring-of-words
-void split(const std::string &s, std::vector<std::string> &into, std::function<bool(char)> is_delim)
+void split_str(const std::string &s, std::vector<std::string> &into, std::function<bool(char)> is_delim)
 {
     using string_size = std::string::size_type;
     string_size i = 0;
@@ -36,28 +36,28 @@ void split(const std::string &s, std::vector<std::string> &into, std::function<b
     }
 }
 
-void split(const std::string &s, std::vector<std::string> &into)
+void split_str(const std::string &s, std::vector<std::string> &into)
 {
-    split(s, into, [](char c)
+    split_str(s, into, [](char c)
           { return isspace(c); });
 }
 
-std::vector<std::string> split(const std::string &s, std::function<bool(char)> is_delim)
+std::vector<std::string> split_str(const std::string &s, std::function<bool(char)> is_delim)
 {
     std::vector<std::string> into;
-    split(s, into, is_delim);
+    split_str(s, into, is_delim);
     return into;
 }
 
-std::vector<std::string> split(const std::string &s)
+std::vector<std::string> split_str(const std::string &s)
 {
-    return split(s, [](char c)
+    return split_str(s, [](char c)
                  { return isspace(c); });
 }
 
-std::vector<std::string> split(const std::string &string, char delim)
+std::vector<std::string> split_str(const std::string &string, char delim)
 {
-    return split(string, [delim](char c)
+    return split_str(string, [delim](char c)
                  { return c == delim; });
 }
 
