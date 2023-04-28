@@ -3,9 +3,10 @@ project(pbn)
 
 set(CMAKE_CXX_STANDARD 23)
 
-file(GLOB SOURCES src/**/*.cpp include/**/*.cpp include/**/**/*.cpp )
-file(GLOB HEADERS include/**/*.h)
-file(GLOB TESTS test/**/*.h)
+
+file(GLOB_RECURSE SOURCES src/*.cpp )
+file(GLOB_RECURSE HEADERS include/*.h)
+file(GLOB TESTS test/*.h)
 
 include_directories(include include/pbn include/tokens include/tokens/tags include/utils include/program include/manipulators 
  include/debug)
