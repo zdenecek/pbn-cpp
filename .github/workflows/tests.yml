@@ -1,0 +1,92 @@
+name: Build and test
+
+on:
+  workflow_dispatch:
+  push:
+    # branches:
+    #   - main
+
+jobs:
+  build:
+    name: ${{ matrix.config.name }}
+    runs-on: ${{ matrix.config.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        config:
+        - name: "Windows Latest MSVC"
+          artifact: "Windows-MSVC.tar.xz"
+          os: windows-latest
+          build_type: "Release"
+          cc: "cl"
+          cxx: "cl"
+          environment_script: "C:/Program Files (x86)/Microsoft Visual Studio/2019/Enterprise/VC/Auxiliary/Build/vcvars64.bat"
+          before_build: |
+              curl -L -O https://dl.bintray.com/boostorg/release/1.76.0/source/boost_1_76_0.tar.bz2
+              tar --bzip2 -xf boost_1_76_0.tar.bz2
+              cd boost_1_76_0
+              ./bootstrap.bat
+              ./b2.exe toolset=msvc variant=release link=static threading=multi runtime-link=shared --with-system --with-thread --with-date_time
+          
+        - name: "Windows Latest MinGW"
+          artifact: "Windows-MinGW.tar.xz"
+          os: windows-latest
+          build_type: "Release"
+          cc: "gcc"
+          cxx: "g++"
+          before_build: |
+               curl -L -O https://dl.bintray.com/boostorg/release/1.76.0/source/boost_1_76_0.tar.bz2
+                tar --bzip2 -xf boost_1_76_0.tar.bz2
+                cd boost_1_76_0
+                ./bootstrap.sh
+                ./b2 toolset=gcc variant=release link=static threading=multi --with-system --with-thread --with-date_time
+        - {
+            name: "Ubuntu Latest GCC", artifact: "Linux.tar.xz",
+            os: ubuntu-latest,
+            build_type: "Release", cc: "gcc", cxx: "g++",
+            before_build: sudo apt-get update && sudo apt-get install libboost-all-dev -y
+          }
+        - {
+            name: "macOS Latest Clang", artifact: "macOS.tar.xz",
+            os: macos-latest,
+            build_type: "Release", cc: "clang", cxx: "clang++",
+            before_build: brew update && brew install boost
+          }
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Setup cmake
+        uses: jwlawson/actions-setup-cmake@v1.13
+        with:
+          cmake-version: '3.23.x'
+      - name: Run platform specific setup
+        shell: cmake -P {0}
+        run: |
+            if ("${{ runner.os }}" STREQUAL "Windows" AND NOT "x${{ matrix.config.environment_script }}" STREQUAL "x")
+            execute_process(
+              COMMAND "${{ matrix.config.environment_script }}" && set
+              OUTPUT_FILE environment_script_output.txt
+            )
+            file(STRINGS environment_script_output.txt output_lines)
+            foreach(line IN LISTS output_lines)
+              if (line MATCHES "^([a-zA-Z0-9_-]+)=(.*)$")
+                set(ENV{${CMAKE_MATCH_1}} "${CMAKE_MATCH_2}")
+              endif()
+            endforeach()
+            endif()
+      - name: Install Boost
+        run: |
+          ${{ matrix.config.before_build }}
+
+
+      - name: CMake Configure
+        run: |
+          mkdir build
+          cd build
+          cmake .. -DCMAKE_BUILD_TYPE=${{ matrix.config.build_type }} -DCMAKE_C_COMPILER=${{ matrix.config.cc }} -DCMAKE_CXX_COMPILER=${{ matrix.config.cxx }}
+      - name: CMake Build
+        run: cmake --build build --config ${{ matrix.config.build_type }} --target test
+      - name: Test
+        run: |
+          cd build
+          ./pbn_test
