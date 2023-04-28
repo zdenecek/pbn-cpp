@@ -7,7 +7,7 @@ file(GLOB SOURCES src/**/*.cpp include/**/*.cpp include/**/**/*.cpp )
 file(GLOB HEADERS include/**/*.h)
 file(GLOB TESTS test/**/*.h)
 
-include_directories(include include/pbn include/tokens include/tokens/tags include/utils include/program include/manipulators 
+include_directories(include include/pbn include/dds include/tokens include/tokens/tags include/utils include/program include/manipulators 
  include/debug)
 
 # Boost
@@ -16,10 +16,9 @@ include_directories(include include/pbn include/tokens include/tokens/tags inclu
 # set(Boost_DEBUG 1)
 # set(BOOST_ROOT "C:/boost")
 
-
-if(MSVC)
-  #set(BOOST_ROOT "C:/boostVC")
-endif()
+# if(MSVC)
+#   set(BOOST_ROOT "C:/boostVC")
+# endif()
 
 find_package(Boost COMPONENTS program_options unit_test_framework  REQUIRED)
 include_directories(${Boost_INCLUDE_DIRS})
@@ -32,7 +31,14 @@ add_executable(test test/basic.cpp ${SOURCES} ${TESTS})
 
 set_target_properties(test PROPERTIES OUTPUT_NAME pbn_test)
 
+# dds library
 
+unset(DDS_LIB CACHE)
+find_library(DDS_LIB NAMES dds.lib PATHS ${CMAKE_CURRENT_SOURCE_DIR}/dds ${CMAKE_CURRENT_SOURCE_DIR} )
+target_link_libraries(pbn PRIVATE ${DDS_LIB})
+target_link_libraries(test PRIVATE ${DDS_LIB})
+
+# End dds library
 
 if(MSVC)
   add_compile_options(PRIVATE /Wall)

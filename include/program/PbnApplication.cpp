@@ -134,6 +134,13 @@ int Application::handleFile(std::string filename, po::variables_map &vm)
         stripper.strip(file);
     }
 
+    if (vm.count("analyze") != 0)
+    {
+        PbnBoardAnalyzer analyzer;
+
+        analyzer.analyze(file);
+    }
+
     auto serializer = PbnSerializer();
     
     if (vm.count("output") != 0)
