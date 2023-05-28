@@ -1,4 +1,5 @@
-#pragma once
+#ifndef UTILS_STRINGS_HPP_
+#define UTILS_STRINGS_HPP_
 
 #include <vector>
 #include <string>
@@ -78,3 +79,5 @@ void rtrim(std::string &string);
  * @param string The string to trim
  */
 void trim(std::string &string);
+
+#endif // UTILS_STRINGS_HPP_

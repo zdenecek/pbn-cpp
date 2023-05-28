@@ -1,4 +1,5 @@
-#pragma once
+#ifndef TOKENS_EMPTYLINE_HPP_
+#define TOKENS_EMPTYLINE_HPP_
 
 #include "SemanticPbnToken.hpp"
 #include <string>
@@ -18,3 +19,5 @@ namespace tokens
     };
 
 }
+
+#endif // TOKENS_EMPTYLINE_HPP_

@@ -1,4 +1,5 @@
-#pragma once
+#ifndef PROGRAM_PBNAPPLICATION_HPP_
+#define PROGRAM_PBNAPPLICATION_HPP_
 
 #include <vector>
 #include <string>
@@ -25,3 +26,6 @@ public:
     /// @brief Entry point; Runs the application with the given command line arguments. 
     int run(int argc, char *argv[]);
 };
+
+#endif // PROGRAM_PBNAPPLICATION_HPP_
+

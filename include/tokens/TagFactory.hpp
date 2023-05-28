@@ -1,4 +1,6 @@
-#pragma once
+#ifndef TOKENS_TAGFACTORY_HPP_
+#define TOKENS_TAGFACTORY_HPP_
+
 
 #include <memory>
 #include <string>
@@ -21,3 +23,5 @@ namespace tokens
         bool isTableTag(const std::string &tagName);
     };
 }
+
+#endif // TOKENS_TAGFACTORY_HPP_

@@ -1,4 +1,7 @@
-#pragma once
+#ifndef TOKENS_TABLETAG_HPP_
+#define TOKENS_TABLETAG_HPP_
+
+
 
 #include <vector>
 #include <ostream>
@@ -103,3 +106,5 @@ namespace tokens
     };
 
 }
+
+#endif // TOKENS_TABLETAG_HPP_

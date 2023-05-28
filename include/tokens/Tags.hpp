@@ -1,5 +1,6 @@
 
-#pragma once
+#ifndef TOKENS_TAGS_HPP_
+#define TOKENS_TAGS_HPP_
 
 #include <algorithm>
 #include <array>
@@ -65,3 +66,5 @@ namespace tokens::tags
     }
 
 }
+
+#endif // TOKENS_TAGS_HPP_

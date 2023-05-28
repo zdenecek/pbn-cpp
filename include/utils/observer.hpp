@@ -1,5 +1,5 @@
-#pragma once
-
+#ifndef UTILS_OBSERVER_HPP_
+#define UTILS_OBSERVER_HPP_
 
 /*
     This file contains a few helper functions for creating observer_ptr's.
@@ -70,3 +70,5 @@ template <typename T>
 auto ptr_to_observer(const std::unique_ptr<T>& ptr) -> observer_ptr<T> {
     return ptr.get();
 }
+
+#endif // UTILS_OBSERVER_HPP_

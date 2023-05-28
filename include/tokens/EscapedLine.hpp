@@ -1,4 +1,5 @@
-#pragma once
+#ifndef TOKENS_ESCAPEDLINE_HPP_
+#define TOKENS_ESCAPEDLINE_HPP_
 
 #include "SemanticPbnToken.hpp"
 
@@ -33,3 +34,5 @@ namespace tokens
     };
 
 } // tokens
+
+#endif // TOKENS_ESCAPEDLINE_HPP_

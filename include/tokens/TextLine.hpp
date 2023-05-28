@@ -1,5 +1,6 @@
 
-#pragma once
+#ifndef TOKENS_TEXTLINE_HPP_
+#define TOKENS_TEXTLINE_HPP_
 
 #include "SemanticPbnToken.hpp"
 
@@ -24,3 +25,5 @@ namespace tokens
         std::string getTypeName() const override;
     };
 }
+
+#endif // TOKENS_TEXTLINE_HPP_

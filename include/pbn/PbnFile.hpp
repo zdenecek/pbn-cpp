@@ -1,4 +1,7 @@
-#pragma once
+#ifndef PBN_PBNFILE_HPP_
+#define PBN_PBNFILE_HPP_
+
+
 
 #include <vector>
 #include <string>
@@ -149,3 +152,5 @@ private:
      */
     void deleteToken(const std::vector<std::unique_ptr<SemanticPbnToken>>::iterator &it);
 };
+
+#endif // PBN_PBNFILE_HPP_

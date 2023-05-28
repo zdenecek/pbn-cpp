@@ -1,4 +1,7 @@
-#pragma once
+#ifndef TOKENS_SEMANTICPBNTOKEN_HPP_
+#define TOKENS_SEMANTICPBNTOKEN_HPP_
+
+
 
 #include <string>
 #include <ostream>
@@ -37,3 +40,5 @@ namespace tokens
     };
 
 }
+
+#endif // TOKENS_SEMANTICPBNTOKEN_HPP_

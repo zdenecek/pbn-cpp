@@ -1,4 +1,5 @@
-#pragma once
+#ifndef PBN_PBNSERIALIZER_HPP_
+#define PBN_PBNSERIALIZER_HPP_
 
 #include <string>
 #include <ostream>
@@ -18,3 +19,5 @@ public:
     /// @param output_stream Stream to serialize the file to
     void serialize(const PbnFile &file, std::ostream &output_stream) const;
 };
+
+#endif // PBN_PBNSERIALIZER_HPP_

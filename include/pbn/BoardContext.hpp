@@ -1,4 +1,9 @@
-#pragma once
+
+#ifndef PBN_BOARDCONTEXT_HPP_
+#define PBN_BOARDCONTEXT_HPP_
+
+
+
 
 #include <string>
 #include <memory>
@@ -70,3 +75,5 @@ public:
      */
     [[nodiscard]] std::span<std::unique_ptr<tokens::SemanticPbnToken>> tokens() const;
 };
+
+#endif // PBN_BOARDCONTEXT_HPP_

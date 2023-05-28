@@ -1,4 +1,5 @@
-#pragma once
+#ifndef PBN_PBNPARSER_HPP_
+#define PBN_PBNPARSER_HPP_
 
 #include <istream>
 #include <optional>
@@ -70,3 +71,5 @@ private:
     std::unique_ptr<tokens::Tag> parseTag(std::string &line, std::istream &inputStream, bool startedOnNewLine);
     std::vector<std::string> getTableValues(std::string &line, std::istream &inputStream);
 };
+
+#endif // PBN_PBNPARSER_HPP_

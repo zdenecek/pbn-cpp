@@ -1,5 +1,8 @@
+#ifndef MANIPULATORS_PBNSTRIPPER_HPP_
+#define MANIPULATORS_PBNSTRIPPER_HPP_
 
-#pragma once
+
+
 
 #include "PbnFile.hpp"
 
@@ -32,3 +35,5 @@ public:
 };
 
 }
+
+#endif // MANIPULATORS_PBNSTRIPPER_HPP_

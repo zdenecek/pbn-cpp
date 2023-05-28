@@ -1,4 +1,5 @@
-#pragma once
+#ifndef TOKENS_COMMENTARY_HPP_
+#define TOKENS_COMMENTARY_HPP_
 
 #include <string>
 #include <ostream>
@@ -42,3 +43,5 @@ namespace tokens
     };
 
 } // tokens
+
+#endif // TOKENS_COMMENTARY_HPP_

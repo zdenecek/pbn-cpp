@@ -1,5 +1,5 @@
-
-#pragma once
+#ifndef TOKENS_EXPORTESCAPEDLINE_HPP_
+#define TOKENS_EXPORTESCAPEDLINE_HPP_
 
 #include <string>
 #include <ostream>
@@ -44,3 +44,5 @@ namespace tokens
         return std::string(this->typeName);
     }
 }
+
+#endif // TOKENS_EXPORTESCAPEDLINE_HPP_

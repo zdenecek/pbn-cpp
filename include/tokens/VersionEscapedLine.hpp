@@ -1,4 +1,7 @@
-#pragma once
+#ifndef TOKENS_VERSIONESCAPEDLINE_HPP_
+#define TOKENS_VERSIONESCAPEDLINE_HPP_
+
+
 
 #include <cassert>
 #include <regex>
@@ -69,3 +72,5 @@ namespace tokens
         return std::string(this->typeName);
     }
 }
+
+#endif // TOKENS_VERSIONESCAPEDLINE_HPP_

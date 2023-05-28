@@ -1,4 +1,5 @@
-#pragma once
+#ifndef TOKENS_TAG_HPP_
+#define TOKENS_TAG_HPP_
 
 #include <string>
 #include <ostream>
@@ -38,3 +39,5 @@ class Tag : public SemanticPbnToken
     };
 
 }
+
+#endif // TOKENS_TAG_HPP_

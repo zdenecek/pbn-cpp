@@ -1,4 +1,5 @@
-#pragma once
+#ifndef DEBUG_DEBUG_UTILS_HPP_
+#define DEBUG_DEBUG_UTILS_HPP_
 
 #include <ostream>
 #include <iomanip>
@@ -53,3 +54,5 @@ struct Debug
     //     (void)out;
     // }
 };
+
+#endif // DEBUG_DEBUG_UTILS_HPP_

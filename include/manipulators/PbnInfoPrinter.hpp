@@ -1,5 +1,6 @@
 
-#pragma once
+#ifndef MANIPULATORS_PBNINFOPRINTER_HPP_
+#define MANIPULATORS_PBNINFOPRINTER_HPP_
 
 #include "PbnFile.hpp"
 
@@ -20,3 +21,5 @@ namespace manipulators
     };
 
 }
+
+#endif // MANIPULATORS_PBNINFOPRINTER_HPP_

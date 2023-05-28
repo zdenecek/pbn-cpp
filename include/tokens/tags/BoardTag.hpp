@@ -1,3 +1,5 @@
+#ifndef TOKENS_TAGS_BOARDTAG_HPP_
+#define TOKENS_TAGS_BOARDTAG_HPP_
 
 #include "Tag.hpp"
 #include "BoardNumber.hpp"
@@ -22,3 +24,5 @@ namespace tokens
         void setBoardNumber(BoardNumber number);
     };
 }
+
+#endif // TOKENS_TAGS_BOARDTAG_HPP_

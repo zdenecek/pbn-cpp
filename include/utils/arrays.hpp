@@ -1,4 +1,5 @@
-#pragma once
+#ifndef UTILS_ARRAYS_HPP_
+#define UTILS_ARRAYS_HPP_
 
 #include <array>
 
@@ -21,3 +22,5 @@ constexpr std::array<T, N1 + N2> concat(std::array<T, N1> lhs, std::array<T, N2>
 
     return result;
 }
+
+#endif // UTILS_ARRAYS_HPP_

@@ -1,4 +1,5 @@
-#pragma once
+#ifndef TOKENS_CUSTOMESCAPEDLINE_HPP_
+#define TOKENS_CUSTOMESCAPEDLINE_HPP_
 
 #include "EscapedLine.hpp"
 #include <ostream>
@@ -25,3 +26,5 @@ namespace tokens
     };
 
 }
+
+#endif // TOKENS_CUSTOMESCAPEDLINE_HPP_
