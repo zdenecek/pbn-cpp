@@ -4,8 +4,7 @@ on:
   workflow_dispatch:
   push:
     branches:
-      - main
-      - ci
+      - master
 
 jobs:
   build:
@@ -39,9 +38,9 @@ jobs:
         with:
           packages: libboost-all-dev
           version: 1.0
-      - name: Install Boost Mac
-        if: matrix.config.id == 'mac'
-        run: brew update && brew install boost && clang++ --version
+      # - name: Install Boost Mac
+      #   if: matrix.config.id == 'mac'
+      #   run: brew update && brew install boost && clang++ --version
       - name: CMake Configure 
         run: |
           mkdir build
