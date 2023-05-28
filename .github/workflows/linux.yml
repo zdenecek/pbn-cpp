@@ -18,12 +18,14 @@ jobs:
             id: gcc, artifact: "Linux.tar.xz",
             os: ubuntu-latest,
             build_type: "Release", cc: "gcc", cxx: "g++",
+            boost: "sudo apt-get update && sudo apt-get install libboost-all-dev -y"
           }
         # - {
         #     name: "macOS Latest Clang", artifact: "macOS.tar.xz",
         #     os: macos-latest,
         #     id: mac,
         #     build_type: "Release", cc: "clang", cxx: "clang++",
+        #     boost: "brew update && brew install boost"
         #   }
     steps:
       - name: Checkout
@@ -32,15 +34,8 @@ jobs:
         uses: jwlawson/actions-setup-cmake@v1.13
         with:
           cmake-version: '3.23.x'
-      - name: Install Boost Linux
-        if: matrix.config.id == 'gcc'
-        uses: awalsh128/cache-apt-pkgs-action@latest
-        with:
-          packages: libboost-all-dev
-          version: 1.0
-      # - name: Install Boost Mac
-      #   if: matrix.config.id == 'mac'
-      #   run: brew update && brew install boost && clang++ --version
+      - name: Install Boost
+        run: ${{ matrix.config.boost }}
       - name: CMake Configure 
         run: |
           mkdir build
