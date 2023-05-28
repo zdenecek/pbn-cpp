@@ -87,13 +87,13 @@ Documentation will be generated in the `docs` directory.
 To run the tests, build the project. A second target of pbn_test should be built, simply execute it:
 
 ```bash
-./run_tests
+./pbn_test
 ```
 
 Additionally, more options can be provided, run with help flag to see.
 
 ```bash
-./run_test --help
+./pbn_test --help
 ```
 
 See [Boost.Test docs](https://www.boost.org/doc/libs/1_80_0/libs/test/doc/html/index.html) for more info.
